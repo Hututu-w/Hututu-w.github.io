@@ -28,7 +28,7 @@
 <meta property="og:image" content="https://tva2.sinaimg.cn/large/007aD2tWgy1gv5q4kysamj61bg0riqp702.jpg">
 <meta property="og:image" content="https://tvax1.sinaimg.cn/large/007aD2tWgy1gv5qizplz3j60tl07q3z202.jpg">
 <meta property="article:published_time" content="2021-10-06T03:40:45.000Z">
-<meta property="article:modified_time" content="2021-10-06T09:59:22.213Z">
+<meta property="article:modified_time" content="2021-10-06T10:01:40.416Z">
 <meta property="article:author" content="hututu">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="MD5">
@@ -232,7 +232,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年10月6日 下午
+                  本文最后更新于：2021年10月6日 晚上
                 
               </p>
             
@@ -243,7 +243,7 @@
 <p>首先说明一下这个函数<br>👉md5($pass, true)：$pass是待加密字符串，第二个参数设为true，控制输出为原始16字符二进制格式</p>
 <p>所以我们要想办法结合这个函数来进行SQL注入，这里看了大佬的wp，学习到一个类似万能密码的东东<code>ffifdyop</code></p>
 <p>这个字符串经过md5加密后会输出一串<code>&#39;or&#39;6XXXXX</code>，结合查询语句<br>👉<code>select * from &#39;admin&#39; where password = &#39;&#39;or&#39;6XXXXX&#39;</code><br>后面的’6XXXXX’就等价于一个永真式，至此就绕过了md5函数，注入成功！</p>
-<p>2、下面来到第二个界面，一句大大的Do you like MD5，那必然like<br>在源码里找到提示信息</p>
+<p>2、下面来到第二个界面，一句大大的Do you like MD5，那必然like..在源码里找到提示信息</p>
 <p><img src="https://tvax3.sinaimg.cn/large/007aD2tWgy1gv5pz39fwhj60l305gmxe02.jpg" srcset="/img/loading.gif" lazyload></p>
 <p>这里涉及到PHP的’==’弱比较漏洞，如果进行比较的两个值类型不同，PHP会首先将其化为相同类型再进行比较，在处理哈希字符串时，它会把所有以’0e’开头的哈希值都解析为0，所以这里传两个哈希后’0e’开头的字符串即可</p>
 <p>附上一些可用字符串：</p>
@@ -255,7 +255,7 @@
 </ul>
 <p>也附上一个弱类型比较表给大家</p>
 <p><img src="https://tva2.sinaimg.cn/large/007aD2tWgy1gv5q4kysamj61bg0riqp702.jpg" srcset="/img/loading.gif" lazyload></p>
-<p>3、绕过成功，来到第三个界面！</p>
+<p>3、绕过成功，来到第三个界面</p>
 <p><img src="https://tvax1.sinaimg.cn/large/007aD2tWgy1gv5qizplz3j60tl07q3z202.jpg" srcset="/img/loading.gif" lazyload></p>
 <p>‘===’进行比较时，会判断值+类型，可以选择强碰撞或者md5数组绕过</p>
 <p>PHP的md5()函数是无法处理数组的，在传入的参数为数组时会返回NULL，因此只需要传入两个不同值的数组，得到的结果就是’NULL === NULL’啦</p>

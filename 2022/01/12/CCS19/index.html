@@ -26,7 +26,7 @@
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007aD2tWly1gyayrs3t5vj30o108twgv.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007aD2tWgy1gyb58pbp6rj30mj0a0jww.jpg">
 <meta property="article:published_time" content="2022-01-12T09:33:50.000Z">
-<meta property="article:modified_time" content="2022-01-13T10:54:52.940Z">
+<meta property="article:modified_time" content="2022-01-13T14:25:08.972Z">
 <meta property="article:author" content="hututu">
 <meta property="article:tag" content="密码学">
 <meta property="article:tag" content="FHE">
@@ -279,6 +279,13 @@
 <h2 id="环上的容错学习问题">2.3 环上的容错学习问题</h2>
 <p>  在本文中，我们假设n是一个二次整数，<span class="math inline">\(R=\mathbb{Z}[x]/(X^{n}+1)\)</span>。记模整数q的R的剩余环为<span class="math inline">\(R_{q}=R/q·R)\)</span>。参数为(n,q,χ,ψ)的环上的容错学习问题：假设给定任意形式为<span class="math inline">\((a_{i},b_{i}=s·a_{i}+e_{i})∈R_{q}^{2}\)</span>的样本，其中<span class="math inline">\(a_{i}\)</span>在<span class="math inline">\(R_{q}\)</span>中是均匀随机的，从<span class="math inline">\(R_{q}\)</span>上的密钥分布χ中选择s，从R上的误差分布ψ中选择<span class="math inline">\(e_{i}\)</span>，<span class="math inline">\(b_{i}\)</span>在计算上与<span class="math inline">\(R_{q}\)</span>上的均匀随机元素是无法区分的。</p>
 <h2 id="gadget分解">2.4 Gadget分解</h2>
+<p>  设<span class="math inline">\(g=(g_{i}∈\mathbb{Z}^{d})\)</span>是一个Gadget向量，q为整数。Gadget分解用<span class="math inline">\(g^{-1}\)</span>表示，是一个从<span class="math inline">\(R_{q}\)</span>到<span class="math inline">\(R^{d}\)</span>的函数，它将元素<span class="math inline">\(a∈R_{q}\)</span>转换为小多项式<span class="math inline">\(u=(u_{0},...,u_{d-1})∈R^{d}\)</span>，满足<span class="math inline">\(a=\sum_{i=1}^{d-1}{g_{i}·u_{i}}(mod\ q)\)</span>。<br><br>   Gadget分解技术广泛应用于HE方案的构造中。非线性电路的同态评估基于密钥交换技术，大多数HE方案利用各种Gadget分解方法来控制噪声增长。相关文献中提出了各种分解方法，如位分解、基分解和基于RNS的分解。我们的实现利用了RNS-friendly分解来提高效率。</p>
+<h1 id="重新线性化多密钥密文">3. 重新线性化多密钥密文</h1>
+<p>  本节给出了对我们MKHE方案的高级描述，并解释了如何执行作为同态算数核心运算的重新线性化过程。</p>
+<h2 id="具有压缩密文的he概述">3.1 具有压缩密文的HE概述</h2>
+<p>  近年来，HE方案的表现取得了显著进步。例如，密文压缩技术允许我们在一个密文中加密多个数据，并以SIMD方式执行并行同态操作。目前，就每个明文时隙的摊销大小和时间而言，BGV、BFV和CKKS等批处理HE方案是性能最好的方案。他们采用一些类似DFT的算法将明文值向量转换为分圆环的元素。<br><br>   令<span class="math inline">\(sk=(1,s)\)</span>表示私钥<span class="math inline">\(s∈R\)</span>。基于RLWE的规范密文形式为<span class="math inline">\(ct=(c_{0},c_{1})∈R_{q}^{2}\)</span>，内积<span class="math inline">\(μ=&lt;ct,sk&gt;(mod\ q)\)</span>（相位）是明文m的随机编码。例如，BFV密文的相位以<span class="math inline">\(μ=(q/t)·m+e\)</span>的形式来表示模t明文，而CKKS的相位<span class="math inline">\(μ=m+e\)</span>是明文的近似值。<br><br>   对于同态计算，我们基本在给定密文的相位之间进行算术运算。特别的，RLWE密文的同态乘法包括两个步骤：张量积和重新线性化。对于输入密文<span class="math inline">\(ct_{1}\)</span>和<span class="math inline">\(ct_{2}\)</span>，我们首先计算它们的张量积并返回满足<span class="math inline">\(&lt;ct,sk\otimes{sk}&gt;=&lt;ct_{1},sk&gt;·&lt;ct_{2},sk&gt;\)</span>的扩展密文<span class="math inline">\(ct=ct_{1}\otimes{ct_{2}}\)</span>。由于<span class="math inline">\(sk\otimes{sk}\)</span>包含非线性项<span class="math inline">\(s^{2}\)</span>，它需要执行重新线性化过程，将扩展密文转换为加密相同消息的规范密文。粗略地说，我们发布了一个重新线性化密钥，它是在sk下对<span class="math inline">\(s^{2}\)</span>进行加密的某种密文，并为此转换执行了密钥交换算法。<br><br>   在多密钥情况下，与k个不同方相关的密文形式为<span class="math inline">\(\overline{ct}=(c_{0},c_{1},...,c_{k})∈R_{q}^{k+1}\)</span>，它可以由级联密钥<span class="math inline">\(\overline{sk}=(1,s_{1},...,s_{k})\)</span>解密，其相位由<span class="math inline">\(μ=&lt;\overline{ct},\overline{sk}&gt;=c_{0}+\sum_{i=1}^{k}{c_{i}·s_{i}}\)</span>计算。如果我们遵循与单密钥设计中相同的同态操作流程，则张量积步骤将返回对应于<span class="math inline">\(\overline{sk}\otimes\overline{sk}\)</span>的扩展密文。因此，我们需要生成一个重新线性化密钥，该密钥由对<span class="math inline">\(\overline{sk}\otimes\overline{sk}\)</span>的项<span class="math inline">\(s_{i}s_{j}\)</span>加密的多个密文组成。与经典的HE方案不同，它需要一些额外的计算，因为<span class="math inline">\(s_{i}s_{j}\)</span>依赖于由不同方独立生成的两个密钥。接下来，我们将解释如何有效地为多密钥同态乘法生成重新线性化密钥。</p>
+<h2 id="基本方案">3.2 基本方案</h2>
+<p>  在本节中，我们将介绍一个基于环的方案，该方案用于生成一些重新线性化所需的公共参数。</p>
 
             </div>
             <hr>

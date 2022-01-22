@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="基于RLWE的全同态加密方案">
+  <meta name="author" content="hututu">
+  <meta name="keywords" content="">
+  <meta name="description" content="基于RLWE的全同态加密方案">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BFV">
+<meta property="og:url" content="http://htt.github.io/2022/01/22/BFV/index.html">
+<meta property="og:site_name" content="翻斗花园2-1001">
+<meta property="og:description" content="基于RLWE的全同态加密方案">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-22T12:52:10.000Z">
+<meta property="article:modified_time" content="2022-01-22T13:41:15.407Z">
+<meta property="article:author" content="hututu">
+<meta property="article:tag" content="密码学">
+<meta property="article:tag" content="FHE">
+<meta name="twitter:card" content="summary_large_image">
+  
+  <title>BFV - 翻斗花园2-1001</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"htt.github.io","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>UUU</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="BFV">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-01-22 20:52" pubdate>
+        2022年1月22日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">BFV</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年1月22日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <center>
+<big>Somewhat Practical Fully Homomorphic Encryption</big>
+</center>
+<p><br></p>
+<p><strong>摘要</strong><br></p>
+<p>  在本文中，我们将基于错误学习(LWE)问题的Brakerski全同态方案修改为基于环-LWE设置。我们介绍了两种重新线性化的优化版本，不仅能够得到更小的重新线性化密钥，而且计算速度更快。我们提供了对各种同态操作详细但简洁的分析，，如乘法、重新线性化和自举，并推导出了这些操作引起的噪声的严格最坏情况界限。自举步骤的分析通过使用模量切换技巧而大大简化了。最后，我们推导了具体的参数，使方案提供一个给定的安全等级并实现全同态。</p>
+<h1 id="介绍">1. 介绍</h1>
+<p>  全同态加密(FHE)允许对加密数据进行任意函数求值，从而产生无数潜在的应用，比如私有云计算。Gentry第一个证明了FHE在理论上是可能的。他的构造由三部分组成：首先，构造一个部分同态的加密方案，即能够评估有限复杂度的函数，第二，尽可能简化方案的解密函数(称为压缩)，第三，对简化后的解密函数进行同态计算，得到噪声大小固定的密文（称为自举）。<br></p>
+<p>  Gentry方案起初的变体都遵循相同的结构，因此必须做出额外的安全假设来支持压缩步骤。最近的方案避免了压缩步骤，并能够通过评估实际解密电路实现自举。最近的方案的另一个优点是它们的安全性是基于LWE问题或它的环变体RLWE的，其难度与(理想)格上的经典问题相关联。<br></p>
+<p>  所有现存方案都有一个共同的特质，就说它们在加密过程中增加了一个小的"噪声"部分。对密文的同态计算将导致这些噪声增长，当噪声过大则导致解密失败。Gentry的自举方法可以用来将密文中的噪声降低到由解密电路的复杂性决定的固定水平。特别是同态乘法引起的噪声增长问题成为设计有效方案的主要障碍。在方案的第一代，噪声本身在每个同态乘法上相乘，导致电路深度成倍增长，即在纯密文(噪声为E)上评估一个深度为n的电路会导致噪声<span class="math inline">\(E^{2^{n}}\)</span>。第一个主要改进使得深度为n的电路噪声等级仅仅为<span class="math inline">\(E^{n}\)</span>。最新的方案进一步改进了这一点，使得每一个乘法的噪声等级都以一个常数因子增长，与密文中的噪声无关，即深度为n的电路的噪声为<span class="math inline">\(E·c(\lambda)^{n}\)</span>，其中<span class="math inline">\(c(\lambda)\)</span>是一个取决于安全参数的常量。<br></p>
+<p>  至于这些建议是否真的可行，答案是“不可行”。对于上述提到的大多方案，已经进行了几次尝试，但没有一次是接近实用的。最近的一篇论文成功地使用大量(数十GB)的RAM内存在8天内同态执行了一个AES加密。当然，与最初的提案相比，在效率方面有了重大进步。<br></p>
+<p>  这篇论文的主要贡献在于它的简单性，因为我们采用了务实的方法，因此任何多余的数学机制都被忽略了。本文的其他贡献如下：我们将基于LWE的Brakerski方案移植到了RLWE上，这本身是相当简单的。我们对各种同态操作提供了一个详细但简洁的分析，如乘法、重新线性化和自举，并推导出这些操作导致的噪声的严格最坏情况界限。使用一个简单的模量切换技巧，我们简化了自举步骤的分析。结合对该方案的实际安全性分析，最终得到了具有给定安全等级的全同态方案的具体参数。<br></p>
+<p>  尽管该文章不是关于优化各种子程序的，但我们确实提供了两个版本的更有效的重新线性化。只要适用，我们将提到对提议方案仍然有效的现有优化。在后续的论文中，我们将通过在软件和硬件中实现它来考虑方案的实际实用性，这将表明标题确实是合理的。<br></p>
+<p>  本文的其余部分如下：第二章简单地回顾了概率的符号和一些背景知识。第三章回顾了一个基于RLWE的加密方案，它将作为第四章中描述的部分同态方案的基础。第五章分析了自举步骤并确定了使部分同态方案实现全同态的最小深度。第六章使用了Lindner和Peikert的分析来推导给定安全等级的全同态方案的参数。最后，第七章总结了本文，并强调了正在进行的工作。<br></p>
+<h1 id="前言">2. 前言</h1>
+<h2 id="基础符号">2.1 基础符号</h2>
+<p>  我们要研究的基本对象是多项式环<span class="math inline">\(R=\mathbb{Z}[x]/(f(x))\)</span>，其中<span class="math inline">\(f(x)\in\mathbb{Z}[x]\)</span>是一个阶为d的一元不可约多项式。在实际中，通常会限制使用一个分圆多项式<span class="math inline">\(\Phi_{m}(x)\)</span>，即原始m次根的最小多项式。用于说明目的通常选择取<span class="math inline">\(f(x)=x^{d}+1,d=2^{n}\)</span>.<br></p>
+<p>  环R的元素将用小写粗体表示，例如<span class="math inline">\(\mathrm{a}\in R\)</span>。元素<span class="math inline">\(\mathrm{a}\in R\)</span>系数用<span class="math inline">\(a_{i}\)</span>表示，即<span class="math inline">\(\mathrm{a}=\sum_{i=0}^{d-1}{a_{i}·x^{i}}\)</span>。无穷范数<span class="math inline">\(||\mathrm{a}||\)</span>定义为<span class="math inline">\(max_{i}|a_{i}|\)</span>，R的扩张因子定义为<span class="math inline">\(\delta_{R}=max\{||\mathrm{a}||·||\mathrm{b}||:\mathrm{a},b\in R\}\)</span>.<br></p>
+<p>  设q&gt;1是一个整数，我们用<span class="math inline">\(\mathbb{Z}_{q}\)</span>表示整数集合<span class="math inline">\((-q/2,q/2]\)</span>。注意，我们只简单地把<span class="math inline">\(\mathbb{Z}_{q}\)</span>看作一个集合，因此不应该和环<span class="math inline">\(\mathbb{Z}/q\mathbb{Z}\)</span>混淆。对于<span class="math inline">\(a\in\mathbb{Z}\)</span>，我们用<span class="math inline">\([a]_{q}\)</span>表示<span class="math inline">\(\mathbb{Z}_{q}\)</span>中的唯一整数，<span class="math inline">\([a]_{q}=a\ mod\ q\)</span>。在少数情况下我们需要在区间[0,q)内进行约简，记该区间为<span class="math inline">\(r_{q}(a)\)</span>(模q的剩余)。<br></p>
+<p>  类似地，当<span class="math inline">\(\mathrm{a}\in R\)</span>，我们用<span class="math inline">\([\mathrm{a}]_{q}\)</span>表示R中通过将<span class="math inline">\([·]_{q}\)</span>应用到它所有的系数上得到的元素。对于<span class="math inline">\(x\in\mathbb{R}\)</span>，我们使用<span class="math inline">\(\lfloor x\rceil\)</span>表示四舍五入到最接近的整数，<span class="math inline">\(\lfloor x\rfloor,\lceil x\rceil\)</span>表示向下取整或向上取整。给定一个整数n，我们用size(n)表示它的大小，即<span class="math inline">\(size(n)=\lceil{log_{2}(n+0.5)}\rceil\)</span>。我们用<span class="math inline">\(n[i]\)</span>表示<span class="math inline">\(|n|\)</span>的位扩展中的第i比特(从0开始计数)。<br></p>
+<p>  注意，所有算术运算都发生在R本身上，在许多情况下甚至(暂时地)发生在<span class="math inline">\(\mathbb{Q}[x]/(f(x))\)</span>。在实施本文提出的方案时，必须注意，计算结果可以模某一整数q。</p>
+<h2 id="概率">2.2 概率</h2>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/FHE/">FHE</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/">密码学</a>
+                    
+                      <a class="hover-with-bg" href="/tags/FHE/">FHE</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/01/17/CCS21/">
+                        <span class="hidden-mobile">CCS21</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"sFXnlp9gs7YNtMJCX3MG41wK-gzGzoHsz","appKey":"iCyDuV9VFIMAj4eJB5cgQhtb","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

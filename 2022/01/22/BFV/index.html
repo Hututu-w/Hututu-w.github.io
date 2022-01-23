@@ -23,12 +23,14 @@
 <meta property="og:site_name" content="翻斗花园2-1001">
 <meta property="og:description" content="基于RLWE的全同态加密方案">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://tva1.sinaimg.cn/large/007aD2tWly1gynu3oyb6nj30hv023dgn.jpg">
 <meta property="article:published_time" content="2022-01-22T12:52:10.000Z">
-<meta property="article:modified_time" content="2022-01-22T13:41:15.407Z">
+<meta property="article:modified_time" content="2022-01-23T11:42:22.415Z">
 <meta property="article:author" content="hututu">
 <meta property="article:tag" content="密码学">
 <meta property="article:tag" content="FHE">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://tva1.sinaimg.cn/large/007aD2tWly1gynu3oyb6nj30hv023dgn.jpg">
   
   <title>BFV - 翻斗花园2-1001</title>
 
@@ -239,7 +241,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2022年1月22日 晚上
+                  本文最后更新于：2022年1月23日 晚上
                 
               </p>
             
@@ -266,6 +268,34 @@
 <p>  类似地，当<span class="math inline">\(\mathrm{a}\in R\)</span>，我们用<span class="math inline">\([\mathrm{a}]_{q}\)</span>表示R中通过将<span class="math inline">\([·]_{q}\)</span>应用到它所有的系数上得到的元素。对于<span class="math inline">\(x\in\mathbb{R}\)</span>，我们使用<span class="math inline">\(\lfloor x\rceil\)</span>表示四舍五入到最接近的整数，<span class="math inline">\(\lfloor x\rfloor,\lceil x\rceil\)</span>表示向下取整或向上取整。给定一个整数n，我们用size(n)表示它的大小，即<span class="math inline">\(size(n)=\lceil{log_{2}(n+0.5)}\rceil\)</span>。我们用<span class="math inline">\(n[i]\)</span>表示<span class="math inline">\(|n|\)</span>的位扩展中的第i比特(从0开始计数)。<br></p>
 <p>  注意，所有算术运算都发生在R本身上，在许多情况下甚至(暂时地)发生在<span class="math inline">\(\mathbb{Q}[x]/(f(x))\)</span>。在实施本文提出的方案时，必须注意，计算结果可以模某一整数q。</p>
 <h2 id="概率">2.2 概率</h2>
+<p>  给定概率分布D，我们用<span class="math inline">\(x\gets D\)</span>表示x从D中采样。对于集合S，<span class="math inline">\(x\gets S\)</span>表示x从S中均匀采样。整数上的分布<span class="math inline">\(\chi\)</span>在[-B, B]成立则称为B-bounded。<br></p>
+<p>  整数上的离散高斯分布<span class="math inline">\(D_{\mathbb{Z},\sigma}\)</span>是一个概率分布，对于每个<span class="math inline">\(x\in\mathbb{Z}\)</span>，其概率与<span class="math inline">\(exp(-\pi|x|^{2}/\sigma^{2})\)</span>成正比。我们注意到对于足够大的B，<span class="math inline">\(D_{\mathbb{Z},\sigma}\)</span>统计学上与一个B-bounded分布是不可区分的，例如可以取<span class="math inline">\(B=10·\sigma\)</span>.<br></p>
+<p>  离散高斯分布<span class="math inline">\(D_{\mathbb{Z},\sigma}\)</span>用于定义R上的一个分布<span class="math inline">\(\chi\)</span>。<span class="math inline">\(\chi\)</span>在一般情况下并不像仅仅根据<span class="math inline">\(D_{\mathbb{Z},\sigma}\)</span>进行系数采样那么简单。但是对于多项式<span class="math inline">\(f(x)=x^{d}+1\)</span>(d为2的幂)，我们可以将<span class="math inline">\(\chi\)</span>定义为<span class="math inline">\(D_{\mathbb{Z},\sigma}^{d}\)</span>。对于更一般的分圆多项式来说，从<span class="math inline">\(\chi\)</span>采样只涉及到一点。回顾一下，对于正态分布<span class="math inline">\(\mathcal{N}(0,\sigma^{2})\)</span>，有<span class="math inline">\(Prob_{x\gets\mathcal{N}(0,\sigma^{2})}[|x|&gt;k·\sigma]=erf(k/\sqrt{2})\)</span>。因此定义函数<span class="math inline">\(\beta(\epsilon):=min\{\beta|erf(\beta/\sqrt{2}&lt;\epsilon)\}\)</span>，概率为<span class="math inline">\(1-\epsilon\)</span>，样本以<span class="math inline">\(\beta·\sigma\)</span>为界。比如说，如果我们设置<span class="math inline">\(\epsilon=2^{-64}\)</span>，那么只需取<span class="math inline">\(\beta(\epsilon)&gt;9.2\)</span>.</p>
+<h1 id="基于rlwe的加密">3. 基于RLWE的加密</h1>
+<p>  在这一章，我们回顾了一个非常简单且经典的加密方案，它由Lyubashevsky、Peikert和Regev提出，基于RLWE问题。</p>
+<h2 id="rlwe问题">3.1 RLWE问题</h2>
+<p>  RLWE问题是LWE问题的一个基于环的版本，其表述如下。<br></p>
+<p>  <strong>定义1(判断RLWE)</strong> 对于安全参数<span class="math inline">\(\lambda\)</span>，设f(x)是一个分圆多项式<span class="math inline">\(\Phi_{m}(x),deg(f)=\phi(m)\)</span>取决于<span class="math inline">\(\lambda\)</span>，设<span class="math inline">\(R=\mathbb{Z}[x]/(f(x))\)</span>。设<span class="math inline">\(q=q(\lambda)\ge 2\)</span>一个整数。对于一个随机元素<span class="math inline">\(s\in R_{q}\)</span>和R上的一个分布<span class="math inline">\(\chi=\chi(\lambda)\)</span>，用<span class="math inline">\(A_{s,\chi}^{(q)}\)</span>示通过选择一个均匀随机元素<span class="math inline">\(\mathrm{a}\gets R_{q}\)</span>和一个噪声项<span class="math inline">\(e\gets\chi\)</span>并输出<span class="math inline">\((\mathrm{a},[\mathrm{a}·s+e]_{q})\)</span>得到的分布。判断<span class="math inline">\(RLWE_{d,q,\chi}\)</span>问题是为了区分分布<span class="math inline">\(A_{s,\chi}^{(q)}\)</span>和均匀分布<span class="math inline">\(U(R_{q}^{2})\)</span>.<br></p>
+<p>  RLWE问题可以（使用一个量子算法）约简为理想格上的最短向量问题。此外，我们可以限制s从<span class="math inline">\(\chi\)</span>中采样，而不是在<span class="math inline">\(R_{q}\)</span>中均匀取样而不涉及任何安全问题。最后，我们注意到问题的难度与q的精确类型无关，因此q不必是素数，可以简单取为2的幂。</p>
+<h2 id="加密方案">3.2 加密方案</h2>
+<p>  上述问题将推导出以下加密方案。明文空间取为<span class="math inline">\(R_{t}\)</span>，t为某个大于1的整数。设<span class="math inline">\(\Delta=\lfloor q/t\rfloor,r_{t}(q)=q\ mod\ t\)</span>，我们有<span class="math inline">\(q=\Delta·t+r_{t}(q)\)</span>。我们注意到q和t都不必是素数，也不必互素。加密方案LPR.ES定义如下：<br></p>
+<ul>
+<li><span class="math inline">\(LPR.ES.SecretKeyGen(1^{\lambda})\)</span>: 采样<span class="math inline">\(s\gets\chi\)</span>，输出<span class="math inline">\(sk=s\)</span>.</li>
+<li><span class="math inline">\(LPR.ES.PublicKeyGen(sk)\)</span>: 设置<span class="math inline">\(s=sk\)</span>，采样<span class="math inline">\(\mathrm{a}\gets R_{q},e\gets\chi\)</span>并输出<span class="math inline">\(pk=([-(\mathrm{a}·s+e)]_{q},\mathrm{a})\)</span>.</li>
+<li><span class="math inline">\(LPR.ES.Encrypt(pk,m)\)</span>: 为了加密消息<span class="math inline">\(m\in R_{t}\)</span>，设<span class="math inline">\(p_{0}=pk[0],p_{1}=pk[1]\)</span>，采样<span class="math inline">\(u,e_{1},e_{2}\gets\chi\)</span>并返回<span class="math inline">\(ct=([p_{0}·u+e_{1}+\Delta·m]_{q},[p_{1}·u+e_{2}]_{q})\)</span>.</li>
+<li><span class="math inline">\(LPR.ES.Decrypt(sk,ct)\)</span>: 设置<span class="math inline">\(s=sk,c_{0}=ct[0],c_{1}=ct[1]\)</span>并计算<span class="math inline">\([\lfloor\frac{t·[c_{0}+c_{1}·s]_{q}}{q}\rceil]_{t}\)</span>.</li>
+</ul>
+<p>  假设给定3个采样的RLWE的难度，可以证明上述方案是语义安全的。<br>   为证明对于正确加密的密文，解密是正确的，我们证明了如下引理。</p>
+<p>  <strong>引理1</strong> 使用上述加密方案LPR.ES的符号并假设<span class="math inline">\(||\chi||&lt;B\)</span>，我们有<span class="math inline">\([c_{0}+c_{1}·s]_{q}=\Delta·m+v\ (1),\ ||v||\le 2·\delta_{R}·B^{2}+B\)</span>。这表明对于<span class="math inline">\(2·\delta_{R}·B^{2}+B&lt;\Delta/2\)</span>，解密是正确工作的。<br></p>
+<p>  证明：简单写出对q取模的定义可以得到：</p>
+<p><img src="http://tva1.sinaimg.cn/large/007aD2tWly1gynu3oyb6nj30hv023dgn.jpg" srcset="/img/loading.gif" lazyload /></p>
+<p>因为对于足够小的误差项，<span class="math inline">\(\Delta·m+e·u+e_{1}+e_{2}·s\)</span>已经位于<span class="math inline">\(R_{q}\)</span>中，我们可以总结<span class="math inline">\(v=e·u+e_{1}+e_{2}·s\)</span>。因为<span class="math inline">\(e,e_{1},e_{2},u,s\gets\chi\)</span>，我们恢复出给定的界限<span class="math inline">\(||v||\le 2·\delta_{R}·B^{2}+B\)</span>。记<span class="math inline">\(c_{0}+c_{1}·s=\Delta·m+v+q·r\)</span>，如果先除以q再乘以t，我们就得到了<span class="math inline">\(m+(t/q)·(v-\epsilon·m)+t·r\)</span>，其中<span class="math inline">\(\epsilon=q/t-\Delta=r_{t}(q)/t&lt;1\)</span>。为了使四舍五入是正确的，我们需要<span class="math inline">\((t/q)·||v-\epsilon·m||&lt;1/2\)</span>，因为<span class="math inline">\(m\in R_{t}\)</span>，给定界限如下。<br></p>
+<p>  V被称为密文中包含的噪声，如果从上下文中不清楚它属于哪个密文ct，则表示为v(ct)。观察噪声项的精确表达式，我们可以看的让u和s尽可能小会让噪声变小。这导出了下列优化和对应的假设。<br></p>
+<p>  <strong>优化/假设1</strong> 相比于采样<span class="math inline">\(s,u\gets\chi\)</span>，我们从<span class="math inline">\(R_{2}\)</span>中采样s和u，即范数<span class="math inline">\(||s||=||u||=1\)</span>。我们注意到噪声项<span class="math inline">\(e_{1},e_{2}\)</span>仍然从<span class="math inline">\(\chi\)</span>中采样。引理1中的界限变为<span class="math inline">\(B·(2·\delta_{R}+1)\)</span>。这种优化的安全性影响似乎很小，至少当我们假设LWE设置的结果可以转移到RLWE设置时是这样的。对于标准LWE，只要分布有足够的熵，我们就可以从任何分布中得到秘密s。假设LWE分析也适用于RLWE设置，只要<span class="math inline">\((_{h}^{d})\)</span>足够大，我们甚至可以使用一个给定的低Hamming权值h的秘密。</p>
+<h1 id="部分同态加密">4. 部分同态加密</h1>
+<p>  在本章，我们将利用LPR.ES推导出一个简单的基于RLWE的部分同态加密方案FV.SH。事实上，FV.SH主要是Brakerski基于标准LWE的全同态方案RLWE设置的一个简单移植。<br></p>
+<p>  该方案由前一章介绍的LPR.ES的一个扩展版本构成。私钥、公钥的生成和加密/解密过程将保持不变，使用优化<span class="math inline">\(u,s\gets\mathbb{R}_{2}\)</span>。LPR.ES的主要补充是一个所谓的重新线性化密钥rlk，它将用于计算同态乘法。<br></p>
+<p>  方案LPR.ES的主要不变量由等式(1)给出，即当我们将密文ct的元素解释为多项式ct(x)的系数并在s中评估该多项式时，得到<span class="math inline">\([ct(s)]_{q}=\Delta·m+v\)</span>，据此我们可以轻易恢复消息m。利用这种解释，可以很容易地推导出同态加法FV.SH.Add和乘法FV.SH.Mul。<br></p>
 
             </div>
             <hr>

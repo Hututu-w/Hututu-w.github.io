@@ -13,29 +13,25 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="PHP md5()函数绕过">
+  <meta name="description" content="全同态加密库SEAL源码分析">
   <meta name="author" content="hututu">
   <meta name="keywords" content="">
-  <meta name="description" content="PHP md5()函数绕过">
+  <meta name="description" content="全同态加密库SEAL源码分析">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BJDCTF Easy_MD5">
-<meta property="og:url" content="http://htt.github.io/2021/10/06/BJDCTF-Easy-MD5/index.html">
+<meta property="og:title" content="1_bfv_basics">
+<meta property="og:url" content="http://htt.github.io/2022/02/06/1_bfv_basics/index.html">
 <meta property="og:site_name" content="翻斗花园2-1001">
-<meta property="og:description" content="PHP md5()函数绕过">
+<meta property="og:description" content="全同态加密库SEAL源码分析">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://tvax4.sinaimg.cn/large/007aD2tWgy1gv5p06qjefj612208843202.jpg">
-<meta property="og:image" content="https://tvax3.sinaimg.cn/large/007aD2tWgy1gv5pz39fwhj60l305gmxe02.jpg">
-<meta property="og:image" content="https://tva2.sinaimg.cn/large/007aD2tWgy1gv5q4kysamj61bg0riqp702.jpg">
-<meta property="og:image" content="https://tvax1.sinaimg.cn/large/007aD2tWgy1gv5qizplz3j60tl07q3z202.jpg">
-<meta property="article:published_time" content="2021-10-06T03:40:45.000Z">
-<meta property="article:modified_time" content="2022-01-12T14:01:51.215Z">
+<meta property="article:published_time" content="2022-02-06T12:13:10.000Z">
+<meta property="article:modified_time" content="2022-02-05T12:13:18.281Z">
 <meta property="article:author" content="hututu">
-<meta property="article:tag" content="CTF">
-<meta property="article:tag" content="MD5">
+<meta property="article:tag" content="密码学">
+<meta property="article:tag" content="FHE">
+<meta property="article:tag" content="SEAL">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://tvax4.sinaimg.cn/large/007aD2tWgy1gv5p06qjefj612208843202.jpg">
   
-  <title>BJDCTF Easy_MD5 - 翻斗花园2-1001</title>
+  <title>1_bfv_basics - 翻斗花园2-1001</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -193,7 +189,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="BJDCTF Easy_MD5">
+            <span class="h2" id="subtitle" title="1_bfv_basics">
               
             </span>
 
@@ -203,8 +199,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-10-06 11:40" pubdate>
-        2021年10月6日 中午
+      <time datetime="2022-02-06 20:13" pubdate>
+        2022年2月6日 晚上
       </time>
     </span>
   
@@ -240,27 +236,52 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">BJDCTF Easy_MD5</h1>
+            <h1 style="display: none">1_bfv_basics</h1>
             
             <div class="markdown-body">
-              <p>1、打开是一个查询框，用burp发包看一下</p>
-<p><img src="https://tvax4.sinaimg.cn/large/007aD2tWgy1gv5p06qjefj612208843202.jpg" srcset="/img/loading.gif" lazyload /></p>
-<p>在Response里有一句提示 <code>Hint: select * from 'admin' where password=md5($pass,true)</code></p>
-<p>首先说明一下这个函数 👉md5(<span class="math inline">\(pass, true)：\)</span>pass是待加密字符串，第二个参数设为true，控制输出为原始16字符二进制格式</p>
-<p>所以我们要想办法结合这个函数来进行SQL注入，这里看了大佬的wp，学习到一个类似万能密码的东东<code>ffifdyop</code></p>
-<p>这个字符串经过md5加密后会输出一串<code>'or'6XXXXX</code>，结合查询语句 👉<code>select * from 'admin' where password = ''or'6XXXXX'</code> 后面的'6XXXXX'就等价于一个永真式，至此就绕过了md5函数，注入成功！</p>
-<p>2、下面来到第二个界面，一句大大的Do you like MD5，那必然like..在源码里找到提示信息</p>
-<p><img src="https://tvax3.sinaimg.cn/large/007aD2tWgy1gv5pz39fwhj60l305gmxe02.jpg" srcset="/img/loading.gif" lazyload /></p>
-<p>这里涉及到PHP的'=='弱比较漏洞，如果进行比较的两个值类型不同，PHP会首先将其化为相同类型再进行比较，在处理哈希字符串时，它会把所有以'0e'开头的哈希值都解析为0，所以这里传两个哈希后'0e'开头的字符串即可</p>
-<p>附上一些可用字符串： * QNKCDZO * 240610708 * s878926199a * s155964671a</p>
-<p>也附上一个弱类型比较表给大家</p>
-<p><img src="https://tva2.sinaimg.cn/large/007aD2tWgy1gv5q4kysamj61bg0riqp702.jpg" srcset="/img/loading.gif" lazyload /></p>
-<p>3、绕过成功，来到第三个界面</p>
-<p><img src="https://tvax1.sinaimg.cn/large/007aD2tWgy1gv5qizplz3j60tl07q3z202.jpg" srcset="/img/loading.gif" lazyload /></p>
-<p>'==='进行比较时，会判断值+类型，可以选择强碰撞或者md5数组绕过</p>
-<p>PHP的md5()函数是无法处理数组的，在传入的参数为数组时会返回NULL，因此只需要传入两个不同值的数组，得到的结果就是'NULL === NULL'啦</p>
-<p>强碰撞的话，这里给出几个md5值相同的字符串： <figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs perl">$s1 = <span class="hljs-string">&quot;%af%13%76%70%82%a0%a6%58%cb%3e%23%38%c4%c6%db%8b%60%2c%bb%90%68%a0%2d%e9%47%aa%78%49%6e%0a%c0%c0%31%d3%fb%cb%82%25%92%0d%cf%61%67%64%e8%cd%7d%47%ba%0e%5d%1b%9c%1c%5c%cd%07%2d%f7%a8%2d%1d%bc%5e%2c%06%46%3a%0f%2d%4b%e9%20%1d%29%66%a4%e1%8b%7d%0c%f5%ef%97%b6%ee%48%dd%0e%09%aa%e5%4d%6a%5d%6d%75%77%72%cf%47%16%a2%06%72%71%c9%a1%8f%00%f6%9d%ee%54%27%71%be%c8%c3%8f%93%e3%52%73%73%53%a0%5f%69%ef%c3%3b%ea%ee%70%71%ae%2a%21%c8%44%d7%22%87%9f%be%79%6d%c4%61%a4%08%57%02%82%2a%ef%36%95%da%ee%13%bc%fb%7e%a3%59%45%ef%25%67%3c%e0%27%69%2b%95%77%b8%cd%dc%4f%de%73%24%e8%ab%66%74%d2%8c%68%06%80%0c%dd%74%ae%31%05%d1%15%7d%c4%5e%bc%0b%0f%21%23%a4%96%7c%17%12%d1%2b%b3%10%b7%37%60%68%d7%cb%35%5a%54%97%08%0d%54%78%49%d0%93%c3%b3%fd%1f%0b%35%11%9d%96%1d%ba%64%e0%86%ad%ef%52%98%2d%84%12%77%bb%ab%e8%64%da%a3%65%55%5d%d5%76%55%57%46%6c%89%c9%df%b2%3c%85%97%1e%f6%38%66%c9%17%22%e7%ea%c9%f5%d2%e0%14%d8%35%4f%0a%5c%34%d3%73%a5%98%f7%66%72%aa%43%e3%bd%a2%cd%62%fd%69%1d%34%30%57%52%ab%41%b1%91%65%f2%30%7f%cf%c6%a1%8c%fb%dc%c4%8f%61%a5%93%40%1a%13%d1%09%c5%e0%f7%87%5f%48%e7%d7%b3%62%04%a7%c4%cb%fd%f4%ff%cf%3b%74%28%1c%96%8e%09%73%3a%9b%a6%2f%ed%b7%99%d5%b9%05%39%95%ab&quot;</span><br>$s2 = <span class="hljs-string">&quot;%af%13%76%70%82%a0%a6%58%cb%3e%23%38%c4%c6%db%8b%60%2c%bb%90%68%a0%2d%e9%47%aa%78%49%6e%0a%c0%c0%31%d3%fb%cb%82%25%92%0d%cf%61%67%64%e8%cd%7d%47%ba%0e%5d%1b%9c%1c%5c%cd%07%2d%f7%a8%2d%1d%bc%5e%2c%06%46%3a%0f%2d%4b%e9%20%1d%29%66%a4%e1%8b%7d%0c%f5%ef%97%b6%ee%48%dd%0e%09%aa%e5%4d%6a%5d%6d%75%77%72%cf%47%16%a2%06%72%71%c9%a1%8f%00%f6%9d%ee%54%27%71%be%c8%c3%8f%93%e3%52%73%73%53%a0%5f%69%ef%c3%3b%ea%ee%70%71%ae%2a%21%c8%44%d7%22%87%9f%be%79%6d%c4%61%a4%08%57%02%82%2a%ef%36%95%da%ee%13%bc%fb%7e%a3%59%45%ef%25%67%3c%e0%27%69%2b%95%77%b8%cd%dc%4f%de%73%24%e8%ab%66%74%d2%8c%68%06%80%0c%dd%74%ae%31%05%d1%15%7d%c4%5e%bc%0b%0f%21%23%a4%96%7c%17%12%d1%2b%b3%10%b7%37%60%68%d7%cb%35%5a%54%97%08%0d%54%78%49%d0%93%c3%b3%fd%1f%0b%35%11%9d%96%1d%ba%64%e0%86%ad%ef%52%98%2d%84%12%77%bb%ab%e8%64%da%a3%65%55%5d%d5%76%55%57%46%6c%89%c9%5f%b2%3c%85%97%1e%f6%38%66%c9%17%22%e7%ea%c9%f5%d2%e0%14%d8%35%4f%0a%5c%34%d3%f3%a5%98%f7%66%72%aa%43%e3%bd%a2%cd%62%fd%e9%1d%34%30%57%52%ab%41%b1%91%65%f2%30%7f%cf%c6%a1%8c%fb%dc%c4%8f%61%a5%13%40%1a%13%d1%09%c5%e0%f7%87%5f%48%e7%d7%b3%62%04%a7%c4%cb%fd%f4%ff%cf%3b%74%a8%1b%96%8e%09%73%3a%9b%a6%2f%ed%b7%99%d5%39%05%39%95%ab&quot;</span><br>$s3 = <span class="hljs-string">&quot;%af%13%76%70%82%a0%a6%58%cb%3e%23%38%c4%c6%db%8b%60%2c%bb%90%68%a0%2d%e9%47%aa%78%49%6e%0a%c0%c0%31%d3%fb%cb%82%25%92%0d%cf%61%67%64%e8%cd%7d%47%ba%0e%5d%1b%9c%1c%5c%cd%07%2d%f7%a8%2d%1d%bc%5e%2c%06%46%3a%0f%2d%4b%e9%20%1d%29%66%a4%e1%8b%7d%0c%f5%ef%97%b6%ee%48%dd%0e%09%aa%e5%4d%6a%5d%6d%75%77%72%cf%47%16%a2%06%72%71%c9%a1%8f%00%f6%9d%ee%54%27%71%be%c8%c3%8f%93%e3%52%73%73%53%a0%5f%69%ef%c3%3b%ea%ee%70%71%ae%2a%21%c8%44%d7%22%87%9f%be%79%ed%c4%61%a4%08%57%02%82%2a%ef%36%95%da%ee%13%bc%fb%7e%a3%59%45%ef%25%67%3c%e0%a7%69%2b%95%77%b8%cd%dc%4f%de%73%24%e8%ab%e6%74%d2%8c%68%06%80%0c%dd%74%ae%31%05%d1%15%7d%c4%5e%bc%0b%0f%21%23%a4%16%7c%17%12%d1%2b%b3%10%b7%37%60%68%d7%cb%35%5a%54%97%08%0d%54%78%49%d0%93%c3%33%fd%1f%0b%35%11%9d%96%1d%ba%64%e0%86%ad%6f%52%98%2d%84%12%77%bb%ab%e8%64%da%a3%65%55%5d%d5%76%55%57%46%6c%89%c9%df%b2%3c%85%97%1e%f6%38%66%c9%17%22%e7%ea%c9%f5%d2%e0%14%d8%35%4f%0a%5c%34%d3%73%a5%98%f7%66%72%aa%43%e3%bd%a2%cd%62%fd%69%1d%34%30%57%52%ab%41%b1%91%65%f2%30%7f%cf%c6%a1%8c%fb%dc%c4%8f%61%a5%93%40%1a%13%d1%09%c5%e0%f7%87%5f%48%e7%d7%b3%62%04%a7%c4%cb%fd%f4%ff%cf%3b%74%28%1c%96%8e%09%73%3a%9b%a6%2f%ed%b7%99%d5%b9%05%39%95%ab&quot;</span><br></code></pre></td></tr></table></figure></p>
-<p>然后就顺利得到flag啦~</p>
+              <h1 id="主流fhe方案比较">主流FHE方案比较</h1>
+<p>1.FHEW/TFHE/GSW</p>
+<ul>
+<li>快速比较</li>
+<li>支持任意布尔电路</li>
+<li>快速bootstrapping(噪声刷新过程，减少因密文计算而产生的噪声，降低失败的可能性)</li>
+</ul>
+<p>2.BGV/BFV</p>
+<ul>
+<li>在整数向量上进行高效的SIMD计算(使用批处理)</li>
+<li>快速高精度整数算术</li>
+<li>快速向量的标量乘法</li>
+<li>Leveled design(通常不使用bootstrapping)</li>
+</ul>
+<p>3.CKKS</p>
+<ul>
+<li>快速多项式近似计算</li>
+<li>相对快速的倒数和离散傅里叶变换</li>
+<li>深度近似计算，如逻辑回归学习</li>
+<li>在实数向量上进行高效的SIMD计算(使用批处理)</li>
+<li>Leveled design(通常不使用bootstrapping)</li>
+</ul>
+<hr />
+<h1 id="bfv源码分析">BFV源码分析</h1>
+<h2 id="设置encryptionparameters类实例">1.设置EncryptionParameters类实例</h2>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">EncryptionParameters parms(scheme_type::bfv);<br><br>size_t poly_modulus_degree = <span class="hljs-number">8192</span>;<br>parms.set<span class="hljs-constructor">_poly_modulus_degree(<span class="hljs-params">poly_modulus_degree</span>)</span>;<br><br>parms.set<span class="hljs-constructor">_coeff_modulus(CoeffModulus::BFVDefault(<span class="hljs-params">poly_modulus_degree</span>)</span>);<br><br>parms.set<span class="hljs-constructor">_plain_modulus(2048)</span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>poly_modulus_degree(多项式模数)：2的正幂，表示分圆多项式的degree。值越大则密文大小越大，导致所有操作更慢但能够实现更加复杂的加密计算，推荐值为1024/2048/4096/8192/16384/32768或更大</li>
+<li>coeff_modulus([密文]系数模数)：不同质数的乘积，每个质数最多60位。其位长是指其质因数位长之和，值越大噪声预算越大，意味着更强的加密计算能力，总位长受到poly_modulus_degree限制</li>
+</ul>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs gherkin">+---------------------+---------------------------- ---+<br>|<span class="hljs-string"> poly_modulus_degree </span>|<span class="hljs-string"> 最大 coeff_modulus 位长 </span>|<br>+---------------------+---------------------------- ---+<br>|<span class="hljs-string"> 1024  </span>|<span class="hljs-string">  27 </span>|<br>|<span class="hljs-string"> 2048  </span>|<span class="hljs-string">  54 </span>|<br>|<span class="hljs-string"> 4096  </span>|<span class="hljs-string"> 109 </span>|<br>|<span class="hljs-string"> 8192  </span>|<span class="hljs-string"> 218 </span>|<br>|<span class="hljs-string"> 16384 </span>|<span class="hljs-string"> 438 </span>|<br>|<span class="hljs-string"> 32768 </span>|<span class="hljs-string"> 881 </span>|<br>+---------------------+---------------------------- ---+<br></code></pre></td></tr></table></figure>
+<ul>
+<li>plain_modulus(明文模数，仅适用于BFV方案)：可以是任意正整数。它决定了明文数据类型的大小和乘法中噪声预算的消耗，因此必须尽量保持明文数据类型尽可能小。</li>
+</ul>
+<p>新加密密文的噪声预算：~<span class="math inline">\(log_{2}(coeff\_modulus/plain\_modulus)\)</span>(位)<br> 同态乘法的噪声预算消耗为<span class="math inline">\(log_{2}(plain\_modulus)+(other\ terms)\)</span>.<br></p>
+<h2 id="构造sealcontext对象">2. 构造SEALContext对象</h2>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">SEALContext <span class="hljs-title">context</span><span class="hljs-params">(parms)</span></span>;<br><br><span class="hljs-built_in">print_line</span>(__LINE__);<br>cout &lt;&lt; <span class="hljs-string">&quot;Set encryption parameters and print&quot;</span> &lt;&lt; endl;<br><span class="hljs-built_in">print_parameters</span>(context);<br><br>cout &lt;&lt; <span class="hljs-string">&quot;Parameter validation (success): &quot;</span> &lt;&lt; context.<span class="hljs-built_in">parameter_error_message</span>() &lt;&lt; endl;<br><br>cout &lt;&lt; endl;<br>cout &lt;&lt; <span class="hljs-string">&quot;~~~~~~ A naive way to calculate 4(x^2+1)(x+1)^2. ~~~~~~&quot;</span> &lt;&lt; endl;<br></code></pre></td></tr></table></figure>
+<h2 id="设置keygenerator类实例">3. 设置KeyGenerator类实例</h2>
+<p>用于生成公私钥对 <figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs abnf">KeyGenerator keygen(context)<span class="hljs-comment">;</span><br>SecretKey secret_key = keygen.secret_key()<span class="hljs-comment">;</span><br>PublicKey public_key<span class="hljs-comment">;</span><br>keygen.create_public_key(public_key)<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure></p>
+<h2 id="设置encryptorevaluatordecryptor类实例">4. 设置Encryptor/Evaluator/Decryptor类实例</h2>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function">Encryptor <span class="hljs-title">encryptor</span><span class="hljs-params">(context, public_key)</span></span>;   <br><span class="hljs-function">Evaluator <span class="hljs-title">evaluator</span><span class="hljs-params">(context)</span></span>;<br><span class="hljs-function">Decryptor <span class="hljs-title">decryptor</span><span class="hljs-params">(context, secret_key)</span></span>;<br></code></pre></td></tr></table></figure>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ldxcsdn/category_11390861.html" class="uri">https://blog.csdn.net/ldxcsdn/category_11390861.html</a> <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43476788/article/details/102980002" class="uri">https://blog.csdn.net/weixin_43476788/article/details/102980002</a></p>
 
             </div>
             <hr>
@@ -270,7 +291,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/BUU%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">BUU刷题记录</a>
+                      <a class="hover-with-bg" href="/categories/FHE/">FHE</a>
                     
                   </div>
                 
@@ -278,9 +299,11 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/CTF/">CTF</a>
+                      <a class="hover-with-bg" href="/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/">密码学</a>
                     
-                      <a class="hover-with-bg" href="/tags/MD5/">MD5</a>
+                      <a class="hover-with-bg" href="/tags/FHE/">FHE</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SEAL/">SEAL</a>
                     
                   </div>
                 
@@ -297,15 +320,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2021/10/06/BJDCTF-ZJCTF%E4%B8%8D%E8%BF%87%E5%A6%82%E6%AD%A4/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">BJDCTF ZJCTF不过如此</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2022/02/02/CCS18/">
+                        <span class="hidden-mobile">CCS18</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
@@ -502,6 +525,48 @@
 
 
 
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
 
 
 

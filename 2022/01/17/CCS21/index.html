@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007aD2tWly1gyiwldu4v4j30o1091q7v.jpg">
 <meta property="og:image" content="http://tva1.sinaimg.cn/large/007aD2tWly1gyiwlkjk63j30o103cmyc.jpg">
 <meta property="article:published_time" content="2022-01-17T13:00:53.000Z">
-<meta property="article:modified_time" content="2022-01-19T05:20:11.858Z">
+<meta property="article:modified_time" content="2022-01-25T08:21:36.876Z">
 <meta property="article:author" content="hututu">
 <meta property="article:tag" content="密码学">
 <meta property="article:tag" content="FHE">
@@ -246,12 +246,6 @@
             <!-- SEO header -->
             <h1 style="display: none">CCS21</h1>
             
-              <p class="note note-info">
-                
-                  本文最后更新于：2022年1月19日 下午
-                
-              </p>
-            
             <div class="markdown-body">
               <center>
 <big>Compressed Oblivious Encoding for Homomorphically Encrypted Search</big>
@@ -259,11 +253,11 @@
 <p><br></p>
 <p><strong>摘要</strong><br></p>
 <p>  全同态加密（FHE）为安全搜索提供了一个简单、有吸引力的框架。与其他安全搜索系统相比，不需要昂贵的设置过程；客户端只需要将加密的数据库上传到服务器就足够了。提供机密性是因为服务器只处理加密的查询和记录。而搜索功能是由加密方案的全同态实现的。<br></p>
-<p>  由于这一原因，研究人员对该问题的关注度越来越高。自从Akavia等人提出了在FHE加密数据上进行安全搜索的框架，并给出了一个名为SPiRiT的实现，几个更加有效的实现方式已经被提出。<br></p>
+<p>  由于这一原因，研究人员对该问题的关注度越来越高。自从Akavia等人提出了在FHE加密数据上进行安全搜索的框架(CCS18)，并给出了一个名为SPiRiT的实现，几个更加有效的实现方式已经被提出。<br></p>
 <p>  在本文中，我们确定了该框架的主要瓶颈，并展示了如何显著提高基于FHE的安全搜索的性能。特别地，<br></p>
 <ul>
 <li>要检索ℓ匹配的项目，现有的框架需要按顺序重复该协议ℓ次。在我们的新框架中，所有匹配的项目都将在一次协议执行中被并行地检索出来。</li>
-<li>Wren等人的最新工作需要进行<span class="math inline">\(O(n)\)</span>乘法运算来得到第一个匹配的索引。我们的解决方案不需要同态乘法，只用加法和标量乘法来编码所有匹配的索引。</li>
+<li>Wren等人的最新工作(CCS20)需要进行<span class="math inline">\(O(n)\)</span>乘法运算来得到第一个匹配的索引。我们的解决方案不需要同态乘法，只用加法和标量乘法来编码所有匹配的索引。</li>
 <li>我们的实现和实验证明了在获取16条匹配记录的过程中，我们的系统在获取查询结果方面比现有技术提高了1800倍，从而使全部搜索功能的速度提高了26倍。</li>
 </ul>
 <p><strong>关键词</strong><br></p>

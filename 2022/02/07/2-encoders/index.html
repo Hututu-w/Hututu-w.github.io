@@ -1,0 +1,605 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="全同态加密库SEAL源码分析">
+  <meta name="author" content="hututu">
+  <meta name="keywords" content="">
+  <meta name="description" content="全同态加密库SEAL源码分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2_encoders">
+<meta property="og:url" content="http://htt.github.io/2022/02/07/2-encoders/index.html">
+<meta property="og:site_name" content="翻斗花园2-1001">
+<meta property="og:description" content="全同态加密库SEAL源码分析">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-07T07:56:11.000Z">
+<meta property="article:modified_time" content="2022-02-07T11:28:33.688Z">
+<meta property="article:author" content="hututu">
+<meta property="article:tag" content="密码学">
+<meta property="article:tag" content="FHE">
+<meta property="article:tag" content="SEAL">
+<meta name="twitter:card" content="summary_large_image">
+  
+  <title>2_encoders - 翻斗花园2-1001</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"htt.github.io","root":"/","version":"1.8.12","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname"}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>UUU</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="2_encoders">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-02-07 15:56" pubdate>
+        2022年2月7日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">2_encoders</h1>
+            
+            <div class="markdown-body">
+              <h1 id="batchencoder">1.BatchEncoder</h1>
+<p>设N为poly_modulus_degree，T为plain_modulus。批处理将BFV明文多项式视为2×(N/2)矩阵，每个元素都是一个模T整数。在矩阵视图中，加密操作在加密矩阵上逐个执行element-wise。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">EncryptionParameters parms(scheme_type::bfv);<br>size_t poly_modulus_degree = <span class="hljs-number">8192</span>;<br>parms.set<span class="hljs-constructor">_poly_modulus_degree(<span class="hljs-params">poly_modulus_degree</span>)</span>;<br>parms.set<span class="hljs-constructor">_coeff_modulus(CoeffModulus::BFVDefault(<span class="hljs-params">poly_modulus_degree</span>)</span>);<br></code></pre></td></tr></table></figure>
+<p>为了启用批处理，我们需要将plain_modulus设置为一个素数，它全等于1模2*oly_modulus_degree，SEAL提供了一种辅助方法来查找这样一个素数。在本例中我们创建了一个支持批处理的20位素数。</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">parms.set<span class="hljs-constructor">_plain_modulus(PlainModulus::Batching(<span class="hljs-params">poly_modulus_degree</span>, 20)</span>);<br><br>SEALContext context(parms);<br>print<span class="hljs-constructor">_parameters(<span class="hljs-params">context</span>)</span>;<br>cout &lt;&lt; endl;<br></code></pre></td></tr></table></figure>
+<p>可以通过查看由SEALContext创建的加密参数限定符来验证是否启用了批处理</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">auto</span> qualifiers = context.<span class="hljs-built_in">first_context_data</span>()-&gt;<span class="hljs-built_in">qualifiers</span>();<br>cout &lt;&lt; <span class="hljs-string">&quot;Batching enabled: &quot;</span> &lt;&lt; boolalpha &lt;&lt; qualifiers.using_batching &lt;&lt; endl;<br></code></pre></td></tr></table></figure>
+<p>生成密钥对、加密/解密/评估器 <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">KeyGenerator keygen(context);<br>SecretKey secret_key = keygen.secret<span class="hljs-constructor">_key()</span>;<br>PublicKey public_key;<br>keygen.create<span class="hljs-constructor">_public_key(<span class="hljs-params">public_key</span>)</span>;<br>RelinKeys relin_keys;<br>keygen.create<span class="hljs-constructor">_relin_keys(<span class="hljs-params">relin_keys</span>)</span>;<br>Encryptor encryptor(context, public_key);<br>Evaluator evaluator(context);<br>Decryptor decryptor(context, secret_key);<br></code></pre></td></tr></table></figure></p>
+<p>生成批处理编码类实例 <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">BatchEncoder batch<span class="hljs-constructor">_encoder(<span class="hljs-params">context</span>)</span>;<br></code></pre></td></tr></table></figure></p>
+<p>批处理slot的总数等于poly_modulus_degree，N，这些slot被组织为2×(N/2)矩阵，可以对其进行加密和计算。每个slot都包含一个整数模plain_modulus。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">size_t</span> slot_count = batch_encoder.<span class="hljs-built_in">slot_count</span>();<br><span class="hljs-keyword">size_t</span> row_size = slot_count / <span class="hljs-number">2</span>;<br>cout &lt;&lt; <span class="hljs-string">&quot;Plaintext matrix row size: &quot;</span> &lt;&lt; row_size &lt;&lt; endl;<br></code></pre></td></tr></table></figure>
+<p>矩阵明文被简单地作为一个扁平的数字向量提供给BatchEncoder。'row_size'最多的组成第一行，其余组成第二行。我们创建如下矩阵：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs json">[ <span class="hljs-number">0</span>,  <span class="hljs-number">1</span>,  <span class="hljs-number">2</span>,  <span class="hljs-number">3</span>,  <span class="hljs-number">0</span>,  <span class="hljs-number">0</span>, ...,  <span class="hljs-number">0</span> ]<br>[ <span class="hljs-number">4</span>,  <span class="hljs-number">5</span>,  <span class="hljs-number">6</span>,  <span class="hljs-number">7</span>,  <span class="hljs-number">0</span>,  <span class="hljs-number">0</span>, ...,  <span class="hljs-number">0</span> ]<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">vector</span>&lt;uint<span class="hljs-number">64</span>_t&gt; pod_matrix(slot_count, <span class="hljs-number">0</span>ULL);<br><span class="hljs-attribute">pod_matrix</span>[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>ULL;<br><span class="hljs-attribute">pod_matrix</span>[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>ULL;<br><span class="hljs-attribute">pod_matrix</span>[<span class="hljs-number">2</span>] = <span class="hljs-number">2</span>ULL;<br><span class="hljs-attribute">pod_matrix</span>[<span class="hljs-number">3</span>] = <span class="hljs-number">3</span>ULL;<br><span class="hljs-attribute">pod_matrix</span>[row_size] = <span class="hljs-number">4</span>ULL;<br><span class="hljs-attribute">pod_matrix</span>[row_size + <span class="hljs-number">1</span>] = <span class="hljs-number">5</span>ULL;<br><span class="hljs-attribute">pod_matrix</span>[row_size + <span class="hljs-number">2</span>] = <span class="hljs-number">6</span>ULL;<br><span class="hljs-attribute">pod_matrix</span>[row_size + <span class="hljs-number">3</span>] = <span class="hljs-number">7</span>ULL;<br><br><span class="hljs-attribute">cout</span> &lt;&lt; <span class="hljs-string">&quot;Input plaintext matrix:&quot;</span> &lt;&lt; endl;<br><span class="hljs-attribute">print_matrix</span>(pod_matrix, row_size);<br></code></pre></td></tr></table></figure>
+<p>首先使用BatchEncoder将矩阵编码为明文多项式</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">Plaintext plain_matrix;<br><span class="hljs-built_in">print_line</span>(__LINE__);<br>cout &lt;&lt; <span class="hljs-string">&quot;Encode plaintext matrix:&quot;</span> &lt;&lt; endl;<br>batch_encoder.<span class="hljs-built_in">encode</span>(pod_matrix, plain_matrix);<br></code></pre></td></tr></table></figure>
+<p>解码，验证编码正确性</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs cpp">vector&lt;<span class="hljs-keyword">uint64_t</span>&gt; pod_result;<br>cout &lt;&lt; <span class="hljs-string">&quot;    + Decode plaintext matrix ...... Correct.&quot;</span> &lt;&lt; endl;<br>batch_encoder.<span class="hljs-built_in">decode</span>(plain_matrix, pod_result);<br><span class="hljs-built_in">print_matrix</span>(pod_result, row_size);<br><br></code></pre></td></tr></table></figure>
+<p>加密编码明文</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp">Ciphertext encrypted_matrix;<br><span class="hljs-built_in">print_line</span>(__LINE__);<br>cout &lt;&lt; <span class="hljs-string">&quot;Encrypt plain_matrix to encrypted_matrix.&quot;</span> &lt;&lt; endl;<br>encryptor.<span class="hljs-built_in">encrypt</span>(plain_matrix, encrypted_matrix);<br>cout &lt;&lt; <span class="hljs-string">&quot;    + Noise budget in encrypted_matrix: &quot;</span> &lt;&lt; decryptor.<span class="hljs-built_in">invariant_noise_budget</span>(encrypted_matrix) &lt;&lt; <span class="hljs-string">&quot; bits&quot;</span><br>     &lt;&lt; endl;<br></code></pre></td></tr></table></figure>
+<p>对密文的操作是在所有8192个slot中同时执行的同态操作。为了说明这一点，构造以下明文矩阵：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs json">[ <span class="hljs-number">1</span>,  <span class="hljs-number">2</span>,  <span class="hljs-number">1</span>,  <span class="hljs-number">2</span>,  <span class="hljs-number">1</span>,  <span class="hljs-number">2</span>, ..., <span class="hljs-number">2</span> ]<br>[ <span class="hljs-number">1</span>,  <span class="hljs-number">2</span>,  <span class="hljs-number">1</span>,  <span class="hljs-number">2</span>,  <span class="hljs-number">1</span>,  <span class="hljs-number">2</span>, ..., <span class="hljs-number">2</span> ]<br></code></pre></td></tr></table></figure>
+<p>将其编码为明文</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp">vector&lt;<span class="hljs-keyword">uint64_t</span>&gt; pod_matrix2;<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; slot_count; i++)<br>&#123;<br>    pod_matrix2.<span class="hljs-built_in">push_back</span>((i &amp; <span class="hljs-built_in">size_t</span>(<span class="hljs-number">0x1</span>)) + <span class="hljs-number">1</span>);<br>&#125;<br>Plaintext plain_matrix2;<br>batch_encoder.<span class="hljs-built_in">encode</span>(pod_matrix2, plain_matrix2);<br>cout &lt;&lt; endl;<br>cout &lt;&lt; <span class="hljs-string">&quot;Second input plaintext matrix:&quot;</span> &lt;&lt; endl;<br><span class="hljs-built_in">print_matrix</span>(pod_matrix2, row_size);<br></code></pre></td></tr></table></figure>
+<p>将第二个明文矩阵与加密矩阵相加，并对和执行平方操作</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">print<span class="hljs-constructor">_line(<span class="hljs-params">__LINE__</span>)</span>;<br>cout &lt;&lt; <span class="hljs-string">&quot;Sum, square, and relinearize.&quot;</span> &lt;&lt; endl;<br>evaluator.add<span class="hljs-constructor">_plain_inplace(<span class="hljs-params">encrypted_matrix</span>, <span class="hljs-params">plain_matrix2</span>)</span>;<br>evaluator.square<span class="hljs-constructor">_inplace(<span class="hljs-params">encrypted_matrix</span>)</span>;<br>evaluator.relinearize<span class="hljs-constructor">_inplace(<span class="hljs-params">encrypted_matrix</span>, <span class="hljs-params">relin_keys</span>)</span>;<br></code></pre></td></tr></table></figure>
+<p>查看剩余噪声预算</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">cout &lt;&lt; <span class="hljs-string">&quot;    + Noise budget in result: &quot;</span> &lt;&lt; decryptor.<span class="hljs-built_in">invariant_noise_budget</span>(encrypted_matrix) &lt;&lt; <span class="hljs-string">&quot; bits&quot;</span> &lt;&lt; endl;<br></code></pre></td></tr></table></figure>
+<p>解密并解码以恢复明文结果(矩阵)</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">Plaintext plain_result;<br>print<span class="hljs-constructor">_line(<span class="hljs-params">__LINE__</span>)</span>;<br>cout &lt;&lt; <span class="hljs-string">&quot;Decrypt and decode result.&quot;</span> &lt;&lt; endl;<br>decryptor.decrypt(encrypted_matrix, plain_result);<br>batch_encoder.decode(plain_result, pod_result);<br>cout &lt;&lt; <span class="hljs-string">&quot;    + Result plaintext matrix ...... Correct.&quot;</span> &lt;&lt; endl;<br>print<span class="hljs-constructor">_matrix(<span class="hljs-params">pod_result</span>, <span class="hljs-params">row_size</span>)</span>;<br></code></pre></td></tr></table></figure>
+<p>当所需的加密计算高度可并行化时，批处理允许我们有效地使用全明文多项式。但是，他并没有解决数据类型溢出问题(除非明文模数非常大)。CKKSEncoder解决了该问题，但代价是只能得到近似的结果。</p>
+<h1 id="ckksencoder">2.CKKSEncoder</h1>
+<p>首先为CKKS方案创建加密参数，与BFV方案相比，有两个重要的区别：<br> (1)CKKS不使用plain_modulus参数<br> (2)在使用CKKS方案时，以特定的方式选择coeff_modulus是非常重要的<br> 在本例中，使用CoeffModulus::Create生成5个40位素数。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">EncryptionParameters</span> parms(scheme_type::ckks);<br><br><span class="hljs-attribute">size_t</span> poly_modulus_degree = <span class="hljs-number">8192</span>;<br><span class="hljs-attribute">parms</span>.set_poly_modulus_degree(poly_modulus_degree);<br><span class="hljs-attribute">parms</span>.set_coeff_modulus(CoeffModulus::Create(poly_modulus_degree, &#123; <span class="hljs-number">40</span>, <span class="hljs-number">40</span>, <span class="hljs-number">40</span>, <span class="hljs-number">40</span>, <span class="hljs-number">40</span> &#125;));<br></code></pre></td></tr></table></figure>
+<p>创建SEALContext实例</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs abnf">SEALContext context(parms)<span class="hljs-comment">;</span><br>print_parameters(context)<span class="hljs-comment">;</span><br>cout &lt;&lt; endl<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+<p>创建密钥对、加密/解密/评估器</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function">KeyGenerator <span class="hljs-title">keygen</span><span class="hljs-params">(context)</span></span>;<br><span class="hljs-keyword">auto</span> secret_key = keygen.<span class="hljs-built_in">secret_key</span>();<br>PublicKey public_key;<br>keygen.<span class="hljs-built_in">create_public_key</span>(public_key);<br>RelinKeys relin_keys;<br>keygen.<span class="hljs-built_in">create_relin_keys</span>(relin_keys);<br><br><span class="hljs-function">Encryptor <span class="hljs-title">encryptor</span><span class="hljs-params">(context, public_key)</span></span>;<br><span class="hljs-function">Evaluator <span class="hljs-title">evaluator</span><span class="hljs-params">(context)</span></span>;<br><span class="hljs-function">Decryptor <span class="hljs-title">decryptor</span><span class="hljs-params">(context, secret_key)</span></span>;<br></code></pre></td></tr></table></figure>
+<p>要创建CKKS明文，需要一个特殊的编码器。CKKSEncoder将实数或复数的向量编码成明文对象。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf">CKKSEncoder encoder(context)<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+<p>在CKKS中，slot的数量是poly_modulus_degree/2，每个slot编码一个实数或复数(而在BatchEncoder中slot的数量等于poly_modulus_degree)</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">size_t</span> slot_count = encoder.<span class="hljs-built_in">slot_count</span>();<br>cout &lt;&lt; <span class="hljs-string">&quot;Number of slots: &quot;</span> &lt;&lt; slot_count &lt;&lt; endl;<br></code></pre></td></tr></table></figure>
+<p>创建一个小向量进行编码，在编码时，CKKSEncoder将隐式地用0填充</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">vector</span>&lt;double&gt; input&#123; <span class="hljs-number">0</span>.<span class="hljs-number">0</span>, <span class="hljs-number">1</span>.<span class="hljs-number">1</span>, <span class="hljs-number">2</span>.<span class="hljs-number">2</span>, <span class="hljs-number">3</span>.<span class="hljs-number">3</span> &#125;;<br><span class="hljs-attribute">cout</span> &lt;&lt; <span class="hljs-string">&quot;Input vector: &quot;</span> &lt;&lt; endl;<br><span class="hljs-attribute">print_vector</span>(input);<br></code></pre></td></tr></table></figure>
+<p>使用CKKSEncoder编码，输入的浮点系数将由参数scale放大。这是必须的，因为即使是在CKKS方案中，明文元素基本上也是整系数多项式。scale决定了编码的位精度，这影响了结果的准确性。在CKKS中，消息模coeff_modulus后存储(在BFV中，消息模plain_modulu存储)，因此缩放后的消息不能太接近coeff_modulu。在这种情况下，coeff_modulus相当大(218位)。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs cpp">Plaintext plain;<br><span class="hljs-keyword">double</span> scale = <span class="hljs-built_in">pow</span>(<span class="hljs-number">2.0</span>, <span class="hljs-number">30</span>);<br><span class="hljs-built_in">print_line</span>(__LINE__);<br>cout &lt;&lt; <span class="hljs-string">&quot;Encode input vector.&quot;</span> &lt;&lt; endl;<br>encoder.<span class="hljs-built_in">encode</span>(input, scale, plain);<br><br></code></pre></td></tr></table></figure>
+<p>解码，检验编码正确性</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">vector&lt;<span class="hljs-keyword">double</span>&gt; output;<br>cout &lt;&lt; <span class="hljs-string">&quot;    + Decode input vector ...... Correct.&quot;</span> &lt;&lt; endl;<br>encoder.<span class="hljs-built_in">decode</span>(plain, output);<br><span class="hljs-built_in">print_vector</span>(output);<br></code></pre></td></tr></table></figure>
+<p>加密(与BFV类似)</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">Ciphertext <span class="hljs-keyword">encrypted</span>;<br>print_line(__LINE__);<br>cout &lt;&lt; &quot;Encrypt input vector, square, and relinearize.&quot; &lt;&lt; endl;<br>encryptor.encrypt(plain, <span class="hljs-keyword">encrypted</span>);<br></code></pre></td></tr></table></figure>
+<p>对密文的基本操作仍然是容易的。本例中我们对密文进行了平方、解密、解码操作，并打印了结果。注意，由于隐式补零，encoding返回一个full size(poly_modulus_degree/2)向量。结果中的scale变为原始scale的平方。</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">evaluator.square_inplace(<span class="hljs-keyword">encrypted</span>);<br>evaluator.relinearize_inplace(<span class="hljs-keyword">encrypted</span>, relin_keys);<br><br><br>cout &lt;&lt; &quot;    + Scale in squared input: &quot; &lt;&lt; <span class="hljs-keyword">encrypted</span>.scale() &lt;&lt; &quot; (&quot; &lt;&lt; log2(<span class="hljs-keyword">encrypted</span>.scale()) &lt;&lt; &quot; bits)&quot;<br>     &lt;&lt; endl;<br><br>print_line(__LINE__);<br>cout &lt;&lt; &quot;Decrypt and decode.&quot; &lt;&lt; endl;<br>decryptor.decrypt(<span class="hljs-keyword">encrypted</span>, plain);<br>encoder.decode(plain, output);<br>cout &lt;&lt; &quot;    + Result vector ...... Correct.&quot; &lt;&lt; endl;<br>print_vector(output);<br></code></pre></td></tr></table></figure>
+<p>CKKS方案允许在加密计算之间减少scale。</p>
+<hr />
+<p>参考:</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43476788/article/details/103575385" class="uri">https://blog.csdn.net/weixin_43476788/article/details/103575385</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/FHE/">FHE</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AF%86%E7%A0%81%E5%AD%A6/">密码学</a>
+                    
+                      <a class="hover-with-bg" href="/tags/FHE/">FHE</a>
+                    
+                      <a class="hover-with-bg" href="/tags/SEAL/">SEAL</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/02/07/3-levels/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">3_levels</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/06/1_bfv_basics/">
+                        <span class="hidden-mobile">1_bfv_basics</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"sFXnlp9gs7YNtMJCX3MG41wK-gzGzoHsz","appKey":"iCyDuV9VFIMAj4eJB5cgQhtb","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+      typing(title)
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>

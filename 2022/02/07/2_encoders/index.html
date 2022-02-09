@@ -13,18 +13,18 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="全同态加密库SEAL源码分析">
+  <meta name="description" content="全同态加密库SEAL示例源码">
   <meta name="author" content="hututu">
   <meta name="keywords" content="">
-  <meta name="description" content="全同态加密库SEAL源码分析">
+  <meta name="description" content="全同态加密库SEAL示例源码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2_encoders">
-<meta property="og:url" content="http://htt.github.io/2022/02/07/2-encoders/index.html">
+<meta property="og:url" content="http://htt.github.io/2022/02/07/2_encoders/index.html">
 <meta property="og:site_name" content="翻斗花园2-1001">
-<meta property="og:description" content="全同态加密库SEAL源码分析">
+<meta property="og:description" content="全同态加密库SEAL示例源码">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-07T07:56:11.000Z">
-<meta property="article:modified_time" content="2022-02-07T11:28:33.688Z">
+<meta property="article:modified_time" content="2022-02-09T09:25:28.772Z">
 <meta property="article:author" content="hututu">
 <meta property="article:tag" content="SEAL">
 <meta property="article:tag" content="FHE">
@@ -292,9 +292,6 @@
 <p>对密文的基本操作仍然是容易的。本例中我们对密文进行了平方、解密、解码操作，并打印了结果。注意，由于隐式补零，encoding返回一个full size(poly_modulus_degree/2)向量。结果中的scale变为原始scale的平方。</p>
 <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">evaluator.square_inplace(<span class="hljs-keyword">encrypted</span>);<br>evaluator.relinearize_inplace(<span class="hljs-keyword">encrypted</span>, relin_keys);<br><br><br>cout &lt;&lt; &quot;    + Scale in squared input: &quot; &lt;&lt; <span class="hljs-keyword">encrypted</span>.scale() &lt;&lt; &quot; (&quot; &lt;&lt; log2(<span class="hljs-keyword">encrypted</span>.scale()) &lt;&lt; &quot; bits)&quot;<br>     &lt;&lt; endl;<br><br>print_line(__LINE__);<br>cout &lt;&lt; &quot;Decrypt and decode.&quot; &lt;&lt; endl;<br>decryptor.decrypt(<span class="hljs-keyword">encrypted</span>, plain);<br>encoder.decode(plain, output);<br>cout &lt;&lt; &quot;    + Result vector ...... Correct.&quot; &lt;&lt; endl;<br>print_vector(output);<br></code></pre></td></tr></table></figure>
 <p>CKKS方案允许在加密计算之间减少scale。</p>
-<hr />
-<p>参考:</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43476788/article/details/103575385" class="uri">https://blog.csdn.net/weixin_43476788/article/details/103575385</a></p>
 
             </div>
             <hr>
@@ -304,7 +301,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/FHE/">FHE</a>
+                      <a class="hover-with-bg" href="/categories/SEAL/">SEAL</a>
                     
                   </div>
                 
@@ -333,7 +330,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/02/08/3-levels/">
+                      <a href="/2022/02/08/3_levels/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">3_levels</span>
                         <span class="visible-mobile">上一篇</span>

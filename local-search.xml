@@ -11,30 +11,9 @@
     <content type="html"><![CDATA[<h1 id="prime-order-bilinear-groups">Prime-Order Bilinear Groups</h1><p><img src="https://tva2.sinaimg.cn/large/007aD2tWly1h4ljl0elnbj317g08rk36.jpg" /></p><h1 id="fragmentation-ac20">Fragmentation [AC20]</h1><p><img src="https://tva1.sinaimg.cn/large/007aD2tWly1h4ljmkn242j313r0ks482.jpg" /></p><h1 id="first-construction">First Construction</h1><p><strong>Reduce the size of the ciphertext to nearly half the one in AC[20].</strong></p><p><img src="https://tvax4.sinaimg.cn/large/007aD2tWly1h4ljnbpercj30za0cnjwp.jpg" /></p><p><img src="https://tva2.sinaimg.cn/large/007aD2tWly1h4ljnrliuij311s0kq49x.jpg" /></p><p><img src="https://tvax2.sinaimg.cn/large/007aD2tWly1h4ljo1kal2j311v0juqbi.jpg" /></p><p><img src="https://tva1.sinaimg.cn/large/007aD2tWly1h4ljofkzuqj312e0mvgwx.jpg" /></p><p><img src="https://tva3.sinaimg.cn/large/007aD2tWly1h4ljor0m5dj312o0q0tik.jpg" /></p><h1 id="second-construction">Second Construction</h1><p><strong>i-GDH assumption → EXDH assumption</strong></p>]]></content>
     
     
-    
-    <tags>
-      
-      <tag>密码学</tag>
-      
-      <tag>AC21</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Oreder-Revealing Encryption</title>
-    <link href="/2022/06/10/ore/"/>
-    <url>/2022/06/10/ore/</url>
-    
-    <content type="html"><![CDATA[<h1 id="introduction">1 Introduction</h1><h2 id="extending-ore-the-leftright-framework">1.1 Extending ORE: The Left/Right Framework</h2><ol type="1"><li><p>left/right framework: the "left" encryption function and "right" encryption function takes a message and the secret key and outputs either a "left" or a "right" ciphertext respectively.<br></p></li><li><p>comparison function: takes a left ciphertext and a right ciphertext, and outputs the comparison relation between the two underlying messages (encrypted by the left and right ciphertexts).</p></li></ol><h2 id="our-contributions">1.2 Our Contributions</h2><p><strong>An efficient small-domain ORE.</strong> with the best-possible semantic security that only relies on pseudorandom functions (PRFs). "small" is due to the ciphertext length grows linearly in the size of the plaintext space.<br></p><p><strong>Domain extension for ORE.</strong> apply domain-extension technique to obtain an ORE scheme whose leakage profile is better than Chenette et al.<br></p><p><strong>Encrypted range queries.</strong> The server sores the "right" ciphertext, the client provides the "left" ciphertexts corresponding to its range.<br></p><p><strong>New lower bounds for OPE.</strong> no efficient OPE scheme can satisfy best-possible security.<br></p><h1 id="preliminaries">2 Preliminaries</h1><h2 id="order-revealing-encryption">2.1 Order-Revealing Encryption</h2><p>three algorithms: ORE.Setup, ORE.Encrypt, ORE.Compare defined over a well-ordered domain D:<br> - <span class="math inline">\(ORE.Setup(1^\lambda)\to sk\)</span>: on input a security parameter <span class="math inline">\(\lambda\)</span>, outputs a secret key <span class="math inline">\(sk\)</span>.<br> - <span class="math inline">\(ORE.Encrypt(sk,m)\to ct\)</span>: on input a secret key <span class="math inline">\(sk\)</span> and a message <span class="math inline">\(m\in\)</span>D, outputs a ciphertext <span class="math inline">\(ct\)</span>. <br> - <span class="math inline">\(ORE.Compare(ct_1,ct_2)\to b\)</span>: on input two ciphertext <span class="math inline">\(ct_1,ct_2\)</span>, outputs a bit <span class="math inline">\(b\in\{0,1\}\)</span>.</p><h1 id="ore-for-small-domain">3 ORE for small-domain</h1><p><strong>Construcion.</strong> the message space <span class="math inline">\([N]\)</span>, secure PRF <span class="math inline">\(F:\{0,1\}^\lambda×\{0,1\}^\lambda\to\{0,1\}^\lambda\)</span>, hash function <span class="math inline">\(H:\{0,1\}^\lambda×\{0,1\}^\lambda\to\mathbb{Z}_3\)</span>, the comparison function <span class="math inline">\(CMP\)</span>, our ORE scheme is defined as follow:<br> - <span class="math inline">\(ORE.Setup(1^\lambda)\)</span>: samples a PRF key <span class="math inline">\(k\gets\{0,1\}^\lambda\)</span> and a uniformly random permutation <span class="math inline">\(\pi:[N]\to[N]\)</span>, <span class="math inline">\(sk := (k,\pi)\)</span>.<br> - <span class="math inline">\(ORE.Encrypt_L(sk,x)\)</span>: <span class="math inline">\(sk := (k,\pi), ct_L=(F(k,\pi(x)), \pi(x))\)</span>.<br> - <span class="math inline">\(ORE.Encrypt_R(sk,y)\)</span>: <span class="math inline">\(sk := (k,\pi)\)</span>, samples a random nonce <span class="math inline">\(r\gets\{0,1\}^\lambda\)</span>, for each <span class="math inline">\(i\in[N], v_i=CMP(\pi^{-1}(i),y)+H(F(k,i),r)(mod\ 3), ct_R=(r,v_1,v_2,...,v_N)\)</span>.<br> - <span class="math inline">\(ORE.Compare(ct_L,ct_R)\)</span>: <span class="math inline">\(ct_L=(k&#39;,h), ct_R=(r,v_1,v_2,...,v_N)\)</span>, outputs <span class="math inline">\(v_h-H(k&#39;,r)(mod\ 3)\)</span>. <br></p>]]></content>
-    
-    
     <categories>
       
-      <category>ORE</category>
+      <category>PKE</category>
       
     </categories>
     
@@ -43,7 +22,7 @@
       
       <tag>密码学</tag>
       
-      <tag>ORE</tag>
+      <tag>AC21</tag>
       
     </tags>
     

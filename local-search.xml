@@ -4,9 +4,9 @@
   
   
   <entry>
-    <title>ndss14</title>
-    <link href="/2022/09/27/ndss14/"/>
-    <url>/2022/09/27/ndss14/</url>
+    <title>NDSS14</title>
+    <link href="/2022/09/27/NDSS14/"/>
+    <url>/2022/09/27/NDSS14/</url>
     
     <content type="html"><![CDATA[<h1 id="contribution">Contribution</h1><p><img src="https://tva3.sinaimg.cn/large/007aD2tWly1h6z1qwutqvj315e0awq7q.jpg" /></p><h1 id="static-constructions">Static Constructions</h1><p><img src="https://tva3.sinaimg.cn/large/007aD2tWly1h6z1rs3eekj315x0jhank.jpg" /></p><h1 id="efficient-extensions">Efficient extensions</h1><p><img src="https://tva2.sinaimg.cn/large/007aD2tWly1h6z1s6vouyj315w0i1gwd.jpg" /></p><p><img src="https://tvax2.sinaimg.cn/large/007aD2tWly1h6z1sfeyysj31640ofgvo.jpg" /></p><h1 id="dynamic-constructions">Dynamic Constructions</h1><p><img src="https://tvax4.sinaimg.cn/large/007aD2tWly1h6z1sz7uysj31620kg12c.jpg" /></p><p><img src="https://tvax1.sinaimg.cn/large/007aD2tWly1h6z1t7soobj31690o5150.jpg" /></p><p><img src="https://tvax2.sinaimg.cn/large/007aD2tWly1h6z1tk981yj315w0phanc.jpg" /></p><p><img src="https://tvax1.sinaimg.cn/large/007aD2tWly1h6z1tz4yvkj315p0lp12p.jpg" /></p><p><img src="https://tvax4.sinaimg.cn/large/007aD2tWly1h6z1uamhf2j31670mfwpi.jpg" /></p>]]></content>
     
@@ -31,9 +31,9 @@
   
   
   <entry>
-    <title>ndss22</title>
-    <link href="/2022/07/27/ndss22/"/>
-    <url>/2022/07/27/ndss22/</url>
+    <title>AC21</title>
+    <link href="/2022/07/27/AC21/"/>
+    <url>/2022/07/27/AC21/</url>
     
     <content type="html"><![CDATA[<h1 id="prime-order-bilinear-groups">Prime-Order Bilinear Groups</h1><p><img src="https://tva2.sinaimg.cn/large/007aD2tWly1h4ljl0elnbj317g08rk36.jpg" /></p><h1 id="fragmentation-ac20">Fragmentation [AC20]</h1><p><img src="https://tva1.sinaimg.cn/large/007aD2tWly1h4ljmkn242j313r0ks482.jpg" /></p><h1 id="first-construction">First Construction</h1><p><strong>Reduce the size of the ciphertext to nearly half the one in AC[20].</strong></p><p><img src="https://tvax4.sinaimg.cn/large/007aD2tWly1h4ljnbpercj30za0cnjwp.jpg" /></p><p><img src="https://tva2.sinaimg.cn/large/007aD2tWly1h4ljnrliuij311s0kq49x.jpg" /></p><p><img src="https://tvax2.sinaimg.cn/large/007aD2tWly1h4ljo1kal2j311v0juqbi.jpg" /></p><p><img src="https://tva1.sinaimg.cn/large/007aD2tWly1h4ljofkzuqj312e0mvgwx.jpg" /></p><p><img src="https://tva3.sinaimg.cn/large/007aD2tWly1h4ljor0m5dj312o0q0tik.jpg" /></p><p><img src="https://tvax1.sinaimg.cn/large/007aD2tWly1h4lk5w0oysj31290n0dq4.jpg" /></p><p><img src="https://tvax2.sinaimg.cn/large/007aD2tWly1h4lk6c9bcmj31140nm48x.jpg" /></p><p><img src="https://tvax2.sinaimg.cn/large/007aD2tWly1h4lk79te6bj31680qadwv.jpg" /></p>]]></content>
     
@@ -49,7 +49,7 @@
       
       <tag>密码学</tag>
       
-      <tag>NDSS</tag>
+      <tag>AC</tag>
       
     </tags>
     

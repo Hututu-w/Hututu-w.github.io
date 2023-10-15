@@ -13,21 +13,53 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
+  <meta name="description" content="WEB">
   <meta name="author" content="hututu">
   <meta name="keywords" content="">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="归档">
-<meta property="og:url" content="http://htt.github.io/archives/2022/index.html">
+  <meta name="description" content="WEB">
+<meta property="og:type" content="website">
+<meta property="og:title" content="VULHUB">
+<meta property="og:url" content="http://htt.github.io/Vulhub.html">
 <meta property="og:site_name" content="翻斗花园2-1001">
+<meta property="og:description" content="WEB">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://htt.github.io/pic/007aD2tWgy1hhxn7yi8hyj311s0fi10p.jpg">
+<meta property="og:image" content="http://htt.github.io/pic/007aD2tWgy1hhxn90y4saj30w00bjq6v.jpg">
+<meta property="og:image" content="http://htt.github.io/pic/007aD2tWgy1hhzvxmzp67j30wt0l0wys.jpg">
+<meta property="og:image" content="http://htt.github.io/pic/007aD2tWgy1hhzw4t92moj30wr08ytgg.jpg">
+<meta property="og:image" content="http://htt.github.io/pic/007aD2tWgy1hhzwdmq0bdj30ju0gp13g.jpg">
+<meta property="og:image" content="http://htt.github.io/pic/007aD2tWgy1hi5qvuswezj31kr0vjh5f.jpg">
+<meta property="og:image" content="http://htt.github.io/pic/007aD2tWgy1hi5qw4sttbj31lg06ygoe.jpg">
+<meta property="og:image" content="http://htt.github.io/pic/007aD2tWgy1hi5qwdjo1kj313p06nwgj.jpg">
+<meta property="og:image" content="http://htt.github.io/pic/007aD2tWgy1hi5qwqvoocj30lx0hg0x9.jpg">
+<meta property="og:image" content="http://htt.github.io/pic/007aD2tWgy1hi5qx4b4r6j31l70s6tl0.jpg">
+<meta property="article:published_time" content="2022-09-08T12:20:53.000Z">
+<meta property="article:modified_time" content="2023-09-27T11:19:50.647Z">
 <meta property="article:author" content="hututu">
+<meta property="article:tag" content="VULHUB">
+<meta property="article:tag" content="漏洞复现">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://htt.github.io/pic/007aD2tWgy1hhxn7yi8hyj311s0fi10p.jpg">
   
-  <title>归档 - 翻斗花园2-1001</title>
+  <title>VULHUB - 翻斗花园2-1001</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
@@ -167,7 +199,7 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="归档">
+            <span class="h2" id="subtitle" title="VULHUB">
               
             </span>
 
@@ -191,25 +223,54 @@
               <div class="col-12 col-md-10 m-auto">
                 
 
-<div class="list-group">
-  <p class="h4">共计 5 篇文章</p>
-  <hr>
+<article class="page-content">
+  <meta name="referrer" content="no-referrer" />
+<h1 id="vulhub-漏洞复现">VULHUB 漏洞复现</h1>
+<h2 id="appweb-cve-2018-8715">1. AppWeb CVE-2018-8715</h2>
+<p>HTTPS Digest认证逻辑漏洞：在7.0.3之前的版本，<code>www-Authenticate</code>传入<code>username=admin</code>且密码为<code>null</code>（不传递密码）时存在逻辑漏洞将导致认证成功并返回<code>session</code>。</p>
+<p><img src="/pic/007aD2tWgy1hhxn7yi8hyj311s0fi10p.jpg" srcset="/img/loading.gif" lazyload /></p>
+<h3 id="http认证">HTTP认证</h3>
+<h4 id="基本认证basic-authentication">基本认证Basic Authentication</h4>
+<p>1.客户端发送请求 2.服务器返回状态码<code>401 Authorization Required</code>，以及<code>www-Authenticate:Basic realm=</code>要求客户端发送合法的用户名和密码 3.客服端需添加<code>Authorization:Basic base64(username:password)</code> 4.服务器进行校验</p>
+<h4 id="摘要认证-digest-authentication">摘要认证 Digest Authentication</h4>
+<p>1.客户端发送请求 2.服务器返回状态码<code>401 Authorization Required</code>，以及<code>www-Authenticate: Digest realm= , qop= , nonce= , opaque=</code></p>
+<p><img src="/pic/007aD2tWgy1hhxn90y4saj30w00bjq6v.jpg" srcset="/img/loading.gif" lazyload /></p>
+<p>3.客户端需添加<code>Authorization: Digest username=, realm= , nonce= , uri= , algorithm= , response= , qop= , nc= , cnonce=</code> 4.服务器端返回与授权会话相关的附加信息<code>Authorization-Info</code></p>
+<ul>
+<li><code>www-Authenticate</code>标头：用于指定认证方式，如<code>Basic</code>、<code>Digest</code>、<code>Bearer</code>等</li>
+<li><code>realm</code>：Request-URI 安全域字符串。在HTTP请求中用于表示资源标识符（URI）的部分，主要用于指定要请求的资源的位置和标识符。</li>
+<li><code>qop</code>：用于指定鉴别方式，包括<code>auth</code>和<code>auth-ini</code></li>
+<li><code>nonce</code>：客户端计算密码摘要时需附加随机值以避免重放攻击</li>
+<li><code>opaque</code>：服务端指定值，客户端需原值返回以查验身份</li>
+<li><code>uri</code>：指定受保护资源的标识符或路径，用于确保客户端在请求该资源时进行适当的身份验证。</li>
+<li><code>algorithm</code>：<code>MD5/MD5-sess</code>，用于计算密码摘要的算法</li>
+<li><code>response</code>：计算得到的密码摘要</li>
+<li><code>nc</code>：16进制计数器，记录同一<code>nonce</code>下客户端发送出请求的数量以检测重复请求</li>
+<li><code>cnonce</code>：客户端随机数，用于查验身份</li>
+</ul>
+<h1 id="mysql-cve-2012-2122">2. MySQL CVE-2012-2122</h1>
+<p>MariaDB/MySQL登录口令判断处理有误，多次尝试可以实现任意密码登录。</p>
+<p>使用Metasploit找到对应的漏洞利用模块</p>
+<p><code>search mysql/CVE-2012-2122</code></p>
+<p><img src="/pic/007aD2tWgy1hhzvxmzp67j30wt0l0wys.jpg" srcset="/img/loading.gif" lazyload /></p>
+<p>进入指定模块并设置相关参数</p>
+<p><code>use auxiliary/scanner/mysql/mysql_authbypass_hashdump</code> <code>show options</code></p>
+<p><img src="/pic/007aD2tWgy1hhzw4t92moj30wr08ytgg.jpg" srcset="/img/loading.gif" lazyload /></p>
+<p>在使用MSF进行爆破时报错，原因应该是多次连接错误导致IP被锁定 <code>Host xxx is blocked because of many connection errors; unblock with 'mysqladmin flush-hosts'</code></p>
+<p>使用脚本进行爆破成功 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">for</span> ((i = <span class="hljs-number">1</span>; i &lt; <span class="hljs-number">1000</span>; i++))<br><span class="hljs-attribute">do</span> <br><span class="hljs-attribute">mysql</span> -h <span class="hljs-number">127.0.0.1</span> -u root -p<span class="hljs-number">123123</span> -P <span class="hljs-number">3306</span>;<br><span class="hljs-attribute">done</span><br></code></pre></td></tr></table></figure> <img src="/pic/007aD2tWgy1hhzwdmq0bdj30ju0gp13g.jpg" srcset="/img/loading.gif" lazyload /></p>
+<h1 id="tomcat8">3. Tomcat8</h1>
+<p>Tomcat manager登录界面存在tomcat/tomcat弱口令，登陆后可上传war码getshell。</p>
+<p>使用Godzilla生成jsp码，压缩为zip后修改后缀为war进行上传</p>
+<p><img src="/pic/007aD2tWgy1hi5qvuswezj31kr0vjh5f.jpg" srcset="/img/loading.gif" lazyload /></p>
+<p><img src="/pic/007aD2tWgy1hi5qw4sttbj31lg06ygoe.jpg" srcset="/img/loading.gif" lazyload /></p>
+<p><img src="/pic/007aD2tWgy1hi5qwdjo1kj313p06nwgj.jpg" srcset="/img/loading.gif" lazyload /></p>
+<p>zip类型压缩包修改后缀名后仍然可以强制打开，读取包内的文件，因此可以通过路径访问到压缩包内的jsp码，使用Godzilla进行连接，成功getshell</p>
+<p><img src="/pic/007aD2tWgy1hi5qwqvoocj30lx0hg0x9.jpg" srcset="/img/loading.gif" lazyload /></p>
+<p><img src="/pic/007aD2tWgy1hi5qx4b4r6j31l70s6tl0.jpg" srcset="/img/loading.gif" lazyload /></p>
+
+
   
-  
-    
-      
-      <p class="h5">2022</p>
-    
-    <a href="/2022/09/08/Vulhub/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">VULHUB</span>
-      <time style="float: right;">09-08</time>
-    </a>
-  
-</div>
-
-
-
-
+</article>
 
               </div>
             </div>
@@ -322,6 +383,19 @@
   
 
 
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
 
 
 

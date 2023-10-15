@@ -17,15 +17,15 @@
   <meta name="author" content="hututu">
   <meta name="keywords" content="">
   <meta name="description" content="其他">
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:title" content="面向就业编程">
-<meta property="og:url" content="http://htt.github.io/2023/09/20/work/index.html">
+<meta property="og:url" content="http://htt.github.io/work.html">
 <meta property="og:site_name" content="翻斗花园2-1001">
 <meta property="og:description" content="其他">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://htt.github.io/pic/排序算法.png">
 <meta property="article:published_time" content="2023-09-20T06:55:22.000Z">
-<meta property="article:modified_time" content="2023-09-27T11:22:08.325Z">
+<meta property="article:modified_time" content="2023-10-01T07:15:17.416Z">
 <meta property="article:author" content="hututu">
 <meta property="article:tag" content="杂">
 <meta name="twitter:card" content="summary_large_image">
@@ -194,28 +194,6 @@
             </span>
 
             
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2023-09-20 14:55" pubdate>
-        2023年9月20日 下午
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-
-  
-
-  
-  
-</div>
-
-            
           </div>
 
           
@@ -226,20 +204,17 @@
 
   <main>
     
-      
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
 
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">面向就业编程</h1>
-            
-            <div class="markdown-body">
-              <meta name="referrer" content="no-referrer" />
+<article class="page-content">
+  <meta name="referrer" content="no-referrer" />
 <h1 id="冯诺依曼体系三要素">1. 冯·诺依曼体系三要素：</h1>
 <ul>
 <li>采用二进制：指令和数据均采用二进制格式；</li>
@@ -419,7 +394,8 @@
 <p>C++11标准库 &lt;utility&gt; 的函数 std::move()能够将一个左值强制转化为右值引用，以用于移动语义。移动语义允许直接转移对象的资产和属性的所有权，而在参数为右值时无需复制它们。即std::move() 将对象的状态或者所有权从一个对象转移到另一个对象，只是转移而没有内存的搬迁或者内存拷贝。因此，通过std::move()，可以避免不必要的拷贝操作。</p>
 <h1 id="反转整数n">24. 反转整数n</h1>
 <figure class="highlight hsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs hsp"><span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>:<br>  <span class="hljs-keyword">print</span>(n)<br>s = <span class="hljs-keyword">str</span>(n)<br>tmp = <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-keyword">if</span> s[<span class="hljs-number">0</span>]==<span class="hljs-string">&quot;-&quot;</span>:<br>    tmp = s[<span class="hljs-number">0</span>]<br>    s = s[<span class="hljs-number">1</span>:]<br><span class="hljs-keyword">end</span> = len(s)<span class="hljs-number">-1</span><br><span class="hljs-keyword">while</span> s[<span class="hljs-keyword">end</span>]==<span class="hljs-number">0</span>:<br>    <span class="hljs-keyword">end</span> -= <span class="hljs-number">1</span><br>res = <span class="hljs-string">&quot;&quot;</span><br><span class="hljs-keyword">while</span> <span class="hljs-keyword">end</span> &gt;= <span class="hljs-number">0</span>:<br>    res += s[<span class="hljs-keyword">end</span>]<br>    <span class="hljs-keyword">end</span> -= <span class="hljs-number">1</span><br><span class="hljs-keyword">print</span>(tmp+res)<br></code></pre></td></tr></table></figure>
-<h1 id="信息系统的安全保护等级由两个定级要素决定等级保护对象受到破坏时所侵害的客体和对客体造成侵害的程度">25. 信息系统的安全保护等级由两个定级要素决定：等级保护对象受到破坏时所侵害的客体和对客体造成侵害的程度。</h1>
+<h1 id="信息系统安全保护等级由两个定级要素决定">25. 信息系统安全保护等级由两个定级要素决定</h1>
+<p>一、等级保护对象受到破坏时所侵害的客体 二、对客体造成侵害的程度</p>
 <h1 id="常见数据库默认端口">26. 常见数据库默认端口</h1>
 <p>一、关系型数据库</p>
 <ol type="1">
@@ -440,115 +416,54 @@
 <p>主要功能是绑定证书持有者的身份和相关的密钥对（通过为公钥及相关的用户身份信息签发数字证书），为用户提供方便的证书申请、证书作废、证书获取、证书状态查询的途径，并利用数字证书及相关的各种服务（证书发布，黑名单发布，时间戳服务等）实现通信中各实体的身份认证、完整性、抗抵赖性和保密性。</p>
 <p>PKI 既不是一个协议，也不是一个软件，它是一个标准，在这个标准之下发展出的为了实现安全基础服务目的的技术统称为 PKI。</p>
 <h1 id="默认文件路径">28. 默认文件路径</h1>
-<p>一、日志默认路径 (1) apache+Linux日志默认路径 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/etc/</span>httpd<span class="hljs-regexp">/logs/</span>access_log<br>或者<br><span class="hljs-regexp">/var/</span>log<span class="hljs-regexp">/httpd/</span>access_log<br></code></pre></td></tr></table></figure> (2) apache+win2003日志默认路径 <figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs taggerscript">D:<span class="hljs-symbol">\x</span>ampp<span class="hljs-symbol">\a</span>pache<span class="hljs-symbol">\l</span>ogs<span class="hljs-symbol">\a</span>ccess.log<br>D:<span class="hljs-symbol">\x</span>ampp<span class="hljs-symbol">\a</span>pache<span class="hljs-symbol">\l</span>ogs<span class="hljs-symbol">\e</span>rror.log<br></code></pre></td></tr></table></figure> (3) IIS6.0+win2003默认日志文件 <code>C:\WINDOWS\system32\Logfiles</code></p>
-<ol start="4" type="1">
+<p>一、日志默认路径</p>
+<ol type="1">
+<li><p>apache+Linux日志默认路径 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/etc/</span>httpd<span class="hljs-regexp">/logs/</span>access_log<br>或者<br><span class="hljs-regexp">/var/</span>log<span class="hljs-regexp">/httpd/</span>access_log<br></code></pre></td></tr></table></figure></p></li>
+<li><p>apache+win2003日志默认路径 <figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs taggerscript">D:<span class="hljs-symbol">\x</span>ampp<span class="hljs-symbol">\a</span>pache<span class="hljs-symbol">\l</span>ogs<span class="hljs-symbol">\a</span>ccess.log<br>D:<span class="hljs-symbol">\x</span>ampp<span class="hljs-symbol">\a</span>pache<span class="hljs-symbol">\l</span>ogs<span class="hljs-symbol">\e</span>rror.log<br></code></pre></td></tr></table></figure></p></li>
+<li><p>IIS6.0+win2003默认日志文件 <code>C:\WINDOWS\system32\Logfiles</code></p></li>
 <li><p>IIS7.0+win2003 默认日志文件 <code>%SystemDrive%\inetpub\logs\LogFiles</code></p></li>
 <li><p>nginx 日志文件 日志文件在用户安装目录logs目录下，例如安装路径为/usr/local/nginx,则日志目录就是在/usr/local/nginx/logs里</p></li>
 </ol>
-<p>二、web中间件默认配置 (1) apache+linux 默认配置文件 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/etc/</span>httpd<span class="hljs-regexp">/conf/</span>httpd.conf<br>或者<br>index.php?page=<span class="hljs-regexp">/etc/i</span>nit.d/httpd`<br></code></pre></td></tr></table></figure> (2) IIS6.0+win2003 配置文件 <code>C:/Windows/system32/inetsrv/metabase.xml</code></p>
-<ol start="3" type="1">
-<li>IIS7.0+WIN 配置文件 <code>C:\Windows\System32\inetsrv\config\applicationHost.config</code></li>
+<p>二、web中间件默认配置</p>
+<ol type="1">
+<li><p>apache+linux 默认配置文件 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/etc/</span>httpd<span class="hljs-regexp">/conf/</span>httpd.conf<br>或者<br>index.php?page=<span class="hljs-regexp">/etc/i</span>nit.d/httpd`<br></code></pre></td></tr></table></figure></p></li>
+<li><p>IIS6.0+win2003 配置文件 <code>C:/Windows/system32/inetsrv/metabase.xml</code></p></li>
+<li><p>IIS7.0+WIN 配置文件 <code>C:\Windows\System32\inetsrv\config\applicationHost.config</code></p></li>
 </ol>
 <h1 id="php伪协议">29. PHP伪协议</h1>
 <p>PHP支持伪协议总结： <figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>file:// — 访问本地文件系统<br><span class="hljs-symbol">2 </span>http:// — 访问 HTTP(s) 网址<br><span class="hljs-symbol">3 </span>ftp:// — 访问 FTP(s) URLs<br><span class="hljs-symbol">4 </span>php:// — 访问各个输入/输出流（I/O streams）<br><span class="hljs-symbol">5 </span>zlib:// — 压缩流<br><span class="hljs-symbol">6 </span><span class="hljs-keyword">data</span>:// — 数据（RFC <span class="hljs-number">2397</span>）<br><span class="hljs-symbol">7 </span>glob:// — 查找匹配的文件路径模式<br><span class="hljs-symbol">8 </span>phar:// — PHP 归档<br><span class="hljs-symbol">9 </span>ssh2:// — Secure <span class="hljs-keyword">Shell</span> <span class="hljs-number">2</span><br><span class="hljs-symbol">10 </span>rar:// — RAR<br><span class="hljs-symbol">11 </span>ogg:// — 音频流<br><span class="hljs-symbol">12 </span>expect:// — 处理交互式的流<br></code></pre></td></tr></table></figure> 一、file://协议</p>
+<h1 id="arp欺骗">30. ARP欺骗</h1>
+<p>ARP协议：Address Resolution Protocol，地址解析协议。将目标IP地址转换为MAC地址。</p>
+<p>ARP协议工作原理：假设主机A想要与主机B通信：</p>
+<ol type="1">
+<li><p>A查找路由表，确定用于访问主机B的转发IP，在本地ARP缓存中查找对应的MAC地址。</p></li>
+<li><p>若没有找到，则将ARP请求帧广播到本地网络上的所有主机。本地网络上的每台主机都接收到ARP请求并且检查是否与自己的IP地址匹配。如果不匹配则丢弃ARP请求。</p></li>
+<li><p>主机B确定ARP请求中的IP地址与自己的IP地址匹配，则将主机A的IP地址和MAC地址映射添加到本地ARP缓存中。</p></li>
+<li><p>主机B将包含其MAC地址的ARP回复消息直接发送回主机A。</p></li>
+<li><p>当主机A收到从主机B发来的ARP回复消息时，会用主机B的IP和MAC地址映射更新ARP缓存。本机缓存是有生存期的，生存期结束后，将再次重复上面的过程。主机B的MAC地址一旦确定，主机A就能向主机B发送IP通信了。</p></li>
+</ol>
+<p>ARP欺骗原理：由于ARP协议不会验证回复者的身份，攻击者可以冒充目标主机发送错误的IP/MAC地址映射</p>
+<h1 id="windows">31. Windows</h1>
+<p>一、安全日志文件存放路径</p>
+<p><code>%SystemRoot%\System32\Winevt\Logs\</code></p>
+<p>二、查看登录到当前系统的用户</p>
+<p><code>query user</code></p>
+<p>三、使用GetPass 内存提取 Windows密码</p>
+<h1 id="linux文件权限">32. Linux文件权限</h1>
+<p>linux文件权限包含四段： 第一段1位：表示文件类型 第二段3位：表示所有者权限 (xxx)分别表示 读(4) 写(2) 执行(1) 第三段3位：表示所在组权限 (xxx)分别表示 读(4) 写(2) 执行(1) 第四段3位：表示其他用户权限 (xxx)分别表示 读(4) 写(2) 执行(1) 四段权限从左至右分别为文件类型，所有者的权限，所有者所在组的权限，其他用户的权限。</p>
+<h1 id="单因素多因素身份认证">33. 单因素/多因素身份认证</h1>
+<p>单因素身份认证指只使用一个因素进行身份认证，通常是密码。即使密码泄露，仍只需要通过一个密码就可以访问系统。</p>
+<p>多因素身份认证需要使用两个或以上因素进行身份认证。如密码+指纹、密码+OTP等组合方式。</p>
 
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/%E7%AC%94%E8%AF%95%E7%9C%9F%E9%A2%98%E9%87%8C%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86%E8%AE%B0%E5%BD%95/">笔试真题里遇到的一些知识记录</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/%E6%9D%82/">杂</a>
-                    
-                  </div>
-                
+
+  
+</article>
+
               </div>
-              
-                <p class="note note-warning">
-                  
-                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
-                  
-                </p>
-              
-              
-                <div class="post-prevnext">
-                  <article class="post-prev col-6">
-                    
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2022/09/08/Vulhub/">
-                        <span class="hidden-mobile">VULHUB</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
             </div>
-
-            
-              <!-- Comments -->
-              <article class="comments" id="comments" lazyload>
-                
-                  
-                
-                
-  <div id="valine"></div>
-  <script type="text/javascript">
-    Fluid.utils.loadComments('#valine', function() {
-      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
-        var options = Object.assign(
-          {"appId":"sFXnlp9gs7YNtMJCX3MG41wK-gzGzoHsz","appKey":"iCyDuV9VFIMAj4eJB5cgQhtb","path":"window.location.pathname","placeholder":null,"avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
-          {
-            el: "#valine",
-            path: window.location.pathname
-          }
-        )
-        new Valine(options);
-        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
-          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
-        })
-      });
-    });
-  </script>
-  <noscript>Please enable JavaScript to view the comments</noscript>
-
-
-              </article>
-            
-          </article>
+          </div>
         </div>
       </div>
-    </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-      </div>
-    
-  </div>
-</div>
-
-<!-- Custom -->
-
-
     
 
     
